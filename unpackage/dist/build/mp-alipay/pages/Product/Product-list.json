@@ -1,0 +1,10 @@
+{
+  "defaultTitle": "商品操作",
+  "pullRefresh": false,
+  "usingComponents": {
+    "u-count-to": "/node-modules/uview-ui/components/u-count-to/u-count-to",
+    "u-swipe-action": "/node-modules/uview-ui/components/u-swipe-action/u-swipe-action",
+    "u-empty": "/node-modules/uview-ui/components/u-empty/u-empty",
+    "bottom-bar": "/components/bottomBar"
+  }
+}

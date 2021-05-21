@@ -1,0 +1,242 @@
+{
+	"easycom": {
+		// npm安装的方式不需要前面的"@/"，下载安装的方式需要"@/"
+		// npm安装方式
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+		// 下载安装方式
+		// "^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/wxauthorize/wxauthorize",
+			"style": {
+				"navigationBarTitleText": " ",
+				"enablePullDownRefresh": false
+			}
+		},{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+            "path" : "pages/my/my",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的",
+                "enablePullDownRefresh": false
+            }          
+        },
+		{
+		    "path" : "pages/Product/Product-addition",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "商品添加",
+		        "enablePullDownRefresh": false
+				
+		    }          
+		},
+		{
+		    "path" : "pages/Product/Product-list",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "商品管理",
+		        "enablePullDownRefresh": false
+				
+		    }          
+		},
+		{
+		    "path" : "pages/Product/Product-list",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "商品操作",
+		        "enablePullDownRefresh": false
+				
+		    }          
+		},
+		{
+		    "path" : "pages/Product/Product-modification",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "商品修改",
+		        "enablePullDownRefresh": false
+				
+		    }          
+		},
+		{
+		    "path" : "pages/traceability/traceability",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+				
+		    }          
+		},
+		{
+		    "path" : "pages/employee/employee-list",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "员工管理",
+		        "enablePullDownRefresh": false
+				
+		    }          
+		}
+        ,{
+            "path" : "pages/contact/contact",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "联系我们",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+		    "path" : "pages/traceability/traceability-list",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "溯源记录",
+		        "enablePullDownRefresh": false
+				
+		    }          
+		}
+        ,{
+            "path" : "pages/business/business-notice",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "商家须知",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+		    "path" : "pages/operation/operation-list",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "出入库记录",
+		        "enablePullDownRefresh": false
+				
+		    }          
+		}
+        ,{
+            "path" : "pages/my/modify",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "修改个人信息",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+		    "path" : "pages/Product/Product-recommend",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "商品推荐",
+		        "enablePullDownRefresh": false
+				
+		    }          
+		},
+		{
+		    "path" : "pages/business/business",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "商家介绍",
+		        "enablePullDownRefresh": false
+				
+		    }          
+		},
+		{
+		    "path" : "pages/business/business-addition",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "商家信息录入",
+		        "enablePullDownRefresh": false
+				
+		    }          
+		},
+		{
+		    "path" : "pages/business/business-apply",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "商家入驻",
+		        "enablePullDownRefresh": false
+				
+		    }          
+		},
+		{
+		    "path" : "pages/business/business-admin",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "商家管理",
+		        "enablePullDownRefresh": false
+				
+		    }          
+		},
+		{
+		    "path" : "pages/scan/staffscan",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "加入商家",
+		        "enablePullDownRefresh": false
+				
+		    }          
+		},
+		{
+		    "path" : "pages/express/express",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "物流信息",
+		        "enablePullDownRefresh": false
+				
+		    }          
+		},
+		{
+		    "path" : "pages/express/express-list",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+				
+		    }          
+		}
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor":"#ffffff",
+		"backgroundColor": "#F8F8F8",
+		"enablePullDownRefresh": false,
+		"navigationStyle":"custom",
+				"app-plus":{
+					"titleView":false
+				}
+	},
+	"tabBar": {
+		"color": "#595656",
+		"selectedColor": "#E84351",
+		"borderStyle": "black",
+		"backgroundColor": "#FFFFFF",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/iconfont/index.png",
+				"selectedIconPath": "static/iconfont/index-dj.png",
+				"text": "首页"
+			},
+			/*
+			{
+				"pagePath": "pages/collection/collection",
+				"iconPath": "static/tarbar/详情页-查看更多.png",
+				"selectedIconPath": "static/tarbar/release.png"
+			},
+			*/
+			{
+				"pagePath": "pages/my/my",
+				"iconPath": "static/iconfont/my.png",
+				"selectedIconPath": "static/iconfont/my-dj.png",
+				"text": "我的"
+			}
+			
+			
+		]
+	}
+}

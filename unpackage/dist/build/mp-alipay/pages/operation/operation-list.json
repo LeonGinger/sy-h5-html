@@ -1,0 +1,8 @@
+{
+  "defaultTitle": "出入库记录",
+  "pullRefresh": false,
+  "usingComponents": {
+    "u-empty": "/node-modules/uview-ui/components/u-empty/u-empty",
+    "bottom-bar": "/components/bottomBar"
+  }
+}

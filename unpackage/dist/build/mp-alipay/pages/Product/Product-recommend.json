@@ -1,0 +1,14 @@
+{
+  "defaultTitle": "商品推荐",
+  "pullRefresh": false,
+  "usingComponents": {
+    "u-swiper": "/node-modules/uview-ui/components/u-swiper/u-swiper",
+    "u-form": "/node-modules/uview-ui/components/u-form/u-form",
+    "u-form-item": "/node-modules/uview-ui/components/u-form-item/u-form-item",
+    "u-mask": "/node-modules/uview-ui/components/u-mask/u-mask",
+    "u-loading": "/node-modules/uview-ui/components/u-loading/u-loading",
+    "u-back-top": "/node-modules/uview-ui/components/u-back-top/u-back-top",
+    "connect": "/common/connect",
+    "traceability-bar": "/components/traceabilityBar"
+  }
+}

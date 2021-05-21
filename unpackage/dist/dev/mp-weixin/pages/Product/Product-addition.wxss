@@ -1,0 +1,85 @@
+
+page {
+	background-color: transparent;
+}
+.bg {
+	position: absolute;
+	z-index: -1;
+
+	left: 0;
+	width: 100%;
+	height: 1300rpx;
+}
+.whitebox:first-child {
+	padding-bottom: 60rpx;
+}
+.lbt {
+	margin-top: 20rpx;
+	-webkit-box-shadow: 0 0 5rpx #C0C4CC;
+	        box-shadow: 0 0 5rpx #C0C4CC;
+	-webkit-border-radius: 30rpx;
+	        border-radius: 30rpx;
+	padding: 5rpx;
+	margin-bottom: 20rpx;
+}
+.scrq {
+	font-size: 28rpx;
+}
+.htitle {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	margin-left: 20rpx;
+}
+.htitle text {
+	font-weight: bold;
+	font-size: 30rpx;
+	margin-top: 5rpx;
+}
+.illustration {
+	width: 130rpx;
+	height: 50rpx;
+	background-color: #0ABB9A;
+	margin-left: 20rpx;
+	color: white;
+	font-size: 20rpx;
+	line-height: 50rpx;
+	text-align: center;
+	-webkit-border-radius: 15rpx;
+	        border-radius: 15rpx;
+}
+.scbg {
+
+	margin-top: 20rpx;
+}
+.noseeill {
+	display: none;
+}
+.seeill {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	height: 100%;
+}
+.ltimg {
+	height: 830rpx;
+	width: 640rpx;
+}
+.seeill .qx {
+	height: 80rpx;
+	width: 80rpx;
+	position: absolute;
+	top: 82%;
+}
+.qxbt {
+	height: 80rpx;
+	width: 80rpx;
+	margin-top: 10rpx;
+}
+

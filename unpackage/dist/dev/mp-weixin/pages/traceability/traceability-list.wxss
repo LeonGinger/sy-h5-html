@@ -1,0 +1,78 @@
+
+.inlist{
+	margin-top: 250rpx;
+}
+.nolist{
+	display: none;
+}
+.listtitle{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	height: 50rpx;
+	margin-top: 10rpx;
+	position: relative;
+	padding: 0 10rpx;
+}
+.atext{
+	font-size: 30rpx;
+	font-weight: bold;
+	color: black;
+	position: absolute;
+	margin-top: -2rpx;
+	left: 8%;
+}
+.dtext{
+	font-size: 30rpx;
+	/* left: 74%;	 */
+	/* position: absolute; */
+	font-weight: bold;
+	color: black;
+}
+.dtext ._span{
+	color: #0ABB9A;
+}
+.listimg{
+	width: 170rpx;
+	height: 170rpx;
+	-webkit-border-radius: 20rpx;
+	        border-radius: 20rpx;
+	overflow: hidden;
+	-webkit-box-shadow: 0 0 12rpx #C0C4CC;
+	        box-shadow: 0 0 12rpx #C0C4CC;
+}
+.listimg image{
+	width: 170rpx;
+	height: 170rpx;
+	-webkit-box-shadow: 0 0 12rpx #C0C4CC;
+	        box-shadow: 0 0 12rpx #C0C4CC;
+}
+.listname{
+	position: absolute;
+	left: 34%;
+	font-size: 30rpx;
+	font-weight: bold;
+	top: 15%;
+}
+.listday{
+	position: absolute;
+	left: 34%;
+	top: 35%;
+	font-size: 26rpx;
+}
+.listgg{
+	position: absolute;
+	left: 34%;
+	top: 55%;
+	font-size: 26rpx;
+}
+.listyd{
+	position: absolute;
+	left: 34%;
+	top: 75%;
+	font-size: 26rpx;
+}
+
