@@ -1,0 +1,152 @@
+
+## !!!说明
+
+如果没有code就跳转去微信授权网址获取code，得到code就请求登录接口，获取到token,并添加入缓存，
+
+如果后台返回‘您未关注公众号，请重试’就意味着该用户没有关注公众号就进入系统，
+
+就让它跳去一篇文章，文章里出现一个二维码，让他扫码关注公众号(现在暂无文章)，如果请求成功，并且有之前的页面请求失败获取下的页面url就跳回去之前那个页面，如果没有就跳到index首页。
+
+
+
+## !!!接口
+/***********************************************************************************************/
+api接口
+export function 接口名称(data){
+	return request.baseRequest(
+		'接口路径',
+		'GET 或 POST’,
+		data //如果只传token不需要写data，如要传多个参数就写，上面接口名称旁data同样也是。
+	)
+}
+页面调用api接口
+
+this.$api.接口名称().then((res) =>{
+				 //成功返回
+			 }) .catch((err) => {
+				//失败返回		
+			});
+/***********************************************************************************************/
+
+
+## !!!项目结构
+|   App.vue                                 //入口
+|   index.php
+|   main.js                                 //入口js
+|   manifest.json
+|   package-lock.json
+|   pages.json
+|   README                                  //项目结构说明
+|   README.md
+|   uni.scss
+|   vue.config.js.js
+|   wechat.js
+|   
++---.hbuilderx
+|       launch.json
+|       
++---common                                //公共文件(工具)
+|   |   base64.js
+|   |   connect.vue
+|   |   exif.js
+|   |   html-parser.js
+|   |   request.js
+|   |   util.js
+|   |   
+|   \---axios
+|       \---node_modules
+|           \---follow-redirects
++---components                          //公共组件
+|   |   ball.vue                        //联系我们(悬浮球)
+|   |   bottomBar.vue                   //底部导航栏
+|   |   connect.vue                     //view与view标签链接样式
+|   |   Hotgoods.vue                    //热卖商品
+|   |   traceabilityBar.vue             //购买商品底部栏
+|   |   
+|   +---amazarashi-uploadimg			//上传图片选择器
+|   |       readme.md
+|   |       uploadImg.vue
+|   |       
+|   +---dist							//jquery包
+|   +---jweixin-module					//
+|   |       index.js
+|   |       
+|   +---mockjs							//mock插件
+|   +---page-animation					//页面切换动画
+|   |       index.css
+|   |       index.vue
+|   |       
+|   +---tki-qrcode						//生成二维码
+|   |       qrcode.js
+|   |       tki-qrcode.vue
+|   |       
+|   \---weixin-js-sdk					//微信sdk
+|           index.js
+|           index.original.js
+|           package.json
+|           README.md
+|           
++---config								//配置文件	
+|       api.js							//所有接口存放文件
+|       common.js					    //公共配置文件
+|       http.js							//封装的请求
+|       storgae.js
+|       
++---jweixin								//微信sdk
+|       index.js
+|       
++---mockjs								//mock插件
++---pages								//页面
+|   +---business						//商家
+|   |       business-addition.vue
+|   |       business-admin.vue
+|   |       business-apply.vue
+|   |       business-notice.vue
+|   |       business.vue
+|   |       
+|   +---contact							//联系我们
+|   |       contact.vue
+|   |       
+|   +---employee						//员工管理
+|   |       employee-list.vue
+|   |       
+|   +---express							//物流信息
+|   |       express-list.vue
+|   |       express.vue
+|   |       
+|   +---index							//首页
+|   |       index.vue
+|   |       
+|   +---my								//我的页面
+|   |       modify.vue
+|   |       my.vue
+|   |       register.vue
+|   |       
+|   +---operation						//出入库记录
+|   |       operation-list.vue
+|   |       
+|   +---Product							//商品管理
+|   |       Product-addition.vue
+|   |       Product-list.vue
+|   |       Product-modification.vue
+|   |       Product-recommend.vue
+|   |       
+|   +---scan							//加入员工扫码后判断页
+|   |       staffscan.vue	
+|   |       
+|   +---traceability					//溯源页(包含操作员出库页面)
+|   |       traceability-list.vue
+|   |       traceability.vue
+|   |       
+|   \---wxauthorize						//微信授权页
+|           wxauthorize.vue
+|           
++---static								//静态文件
+|   |   
+|   +---css								//全局css样式
+|   |       ucss.css
+|   |       
+|   \---iconfont						//icon(不同开发人员请使用阿里icon,并用文件夹区分个人icon,最后在入口引入)
++---unpackage							//打包目录
+|   \---dist                         
+\---uview-ui							//uview-ui框架
