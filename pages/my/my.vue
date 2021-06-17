@@ -143,10 +143,10 @@
 		<view class="caption">
 			<!-- <view class="corporate_name">协成科技有限公司 版权所有</view>
 			<view class="qq">QQ:985424414</view> -->
-			<view class="title">溯源平台</view>
+			<view class="title">农产品溯源平台</view>
 			<view class="contact">客服微信:18938746486</view>
 			<view class="jvc">(加微信请留言"溯源平台")</view>
-			<view class="copyright">Copyright 2021 ZhiLv. All Rights Reserved</view>
+			<view class="copyright">Copyright 2021 智旅网络. All Rights Reserved</view>
 		</view>
 		<bottomBar :selected="1"></bottomBar>
 	</view>
