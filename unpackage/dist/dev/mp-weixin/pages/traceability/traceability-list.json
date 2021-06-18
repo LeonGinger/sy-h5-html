@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "溯源记录",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "u-count-to": "/node-modules/uview-ui/components/u-count-to/u-count-to",
-    "u-empty": "/node-modules/uview-ui/components/u-empty/u-empty"
-  }
-}

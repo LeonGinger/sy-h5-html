@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "商家管理",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "u-swipe-action": "/node-modules/uview-ui/components/u-swipe-action/u-swipe-action",
-    "u-empty": "/node-modules/uview-ui/components/u-empty/u-empty"
-  }
-}

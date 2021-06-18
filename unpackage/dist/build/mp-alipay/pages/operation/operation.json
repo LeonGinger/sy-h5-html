@@ -1,9 +1,0 @@
-{
-  "defaultTitle": "商品操作",
-  "pullRefresh": false,
-  "usingComponents": {
-    "u-form": "/node-modules/uview-ui/components/u-form/u-form",
-    "u-form-item": "/node-modules/uview-ui/components/u-form-item/u-form-item",
-    "connect": "/common/connect"
-  }
-}
