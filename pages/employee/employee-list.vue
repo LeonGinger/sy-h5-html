@@ -38,7 +38,22 @@
 			<view class="ewmbox">
 				<text class="ewmtitle">扫码添加员工</text>
 				<view class="ewm" >
-					<tki-qrcode v-if="ifShow" cid="qrcode1" ref="qrcode" :val="val" :size="size" :unit="unit" :background="background" :foreground="foreground" :pdground="pdground" :icon="icon" :iconSize="iconsize" :lv="lv" :onval="onval" :loadMake="loadMake" :usingComponents="true" @result="qrR" />
+					<tki-qrcode v-if="ifShow" 
+						cid="qrcode1" 
+						ref="qrcode" 
+						:val="val" 
+						:size="size" 
+						:unit="unit" 
+						:background="background" 
+						:foreground="foreground" 
+						:pdground="pdground" 
+						:icon="icon" 
+						:iconSize="iconsize" 
+						:lv="lv" 
+						:onval="onval" 
+						:loadMake="loadMake" 
+						:usingComponents="true" 
+						@result="qrR" />
 				</view>
 				<image src="@/static/qx.png" class="qx" @click="add = false"></image>
 			</view>
@@ -120,7 +135,24 @@ import tkiQrcode from '@/components/tki-qrcode/tki-qrcode.vue'
 						 console.log("里",this.grant_code)
 						 let grant_code=res.data[0].grant_code
 						 this.val=this.syhttp + '/#/pages/scan/staffscan?grant_code='+grant_code; 
-				 })	
+				 }).catch((error_res)=>{
+					uni.showModal({
+						title: "功能无法使用",
+						content: error_res.data.message,
+						showCancel: false,
+						confirmColor: '#0ABB9A',
+						// success:function(res){
+						// 	uni.navigateTo({
+						// 		url: 'Product-list',
+						// 		success: res => {},
+						// 		fail: () => {},
+						// 		complete: () => {}
+						// 	});
+							
+						// }
+					})
+					 
+				 })
 				_this.$api.userinfo().then((res) =>{					
 								 _this.State = res.data.role_id
 								if(res.data.role_id !=1 && res.data.role_id !=2){  //如果不是管理员或商家，就不允许滑动列表

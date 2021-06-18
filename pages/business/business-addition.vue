@@ -231,8 +231,10 @@
 				console.log("ressssss", res)
 				
 				//为新数组赋值
-				_this.newBusiness_Selectall = JSON.parse(JSON.stringify(res.data[0]))
-				//为对比数组赋值
+				_this.newBusiness_Selectall = {...res.data[0]}
+				console.log(_this.newBusiness_Selectall)
+				// _this.newBusiness_Selectall = JSON.parse(JSON.stringify(res.data[0]))
+				// //为对比数组赋值
 				_this.oldBusiness_Selectall = JSON.parse(JSON.stringify(res.data[0]))
 				//企业证书赋值
 				console.log("_this.OldBusiness_Selectall",_this.oldBusiness_Selectall)
@@ -258,7 +260,14 @@
 					
 					
 				}else{
-					let fg_img = JSON.parse(_this.newBusiness_Selectall.business_img[0].business_image_injson)
+					if(_this.newBusiness_Selectall.business_img[0].business_image_injson){
+						var fg_img = JSON.parse(_this.newBusiness_Selectall.business_img[0].business_image_injson)
+					}else{
+						var fg_img = []
+					}
+
+
+					
 					console.log("fg_imgfff",fg_img)
 					
 					for(let i = 0;i < fg_img.length;i++){
@@ -277,66 +286,12 @@
 				}
 				//商家风光文字赋值
 				if(_this.newBusiness_Selectall.business_img[0].business_img_contentjson != ' '){
-					let fgwz_img = JSON.parse(_this.newBusiness_Selectall.business_img[0].business_img_contentjson)
-					// console.log("fgwz_imgdd",fgwz_img)
-					for(let i = 0;i < fgwz_img.length;i++){
-						// console.log("aaa",fgwz_img[i])
-						_this.tjlb[i].tjtext = fgwz_img[i]
-						
-					}
-					// console.log("fgwz_img",fgwz_img)
-				 }
-			}).catch((error_res)=>{
-				console.log(error_res)
-				let res = error_res.data
-				//为新数组赋值
-				_this.newBusiness_Selectall = JSON.parse(JSON.stringify(res.data[0]))
-				//为对比数组赋值
-				_this.oldBusiness_Selectall = JSON.parse(JSON.stringify(res.data[0]))
-				//企业证书赋值
-				console.log("_this.OldBusiness_Selectall",_this.oldBusiness_Selectall)
-				console.log("_this.newBusiness_Selectall",_this.newBusiness_Selectall)
-				let zs_img = JSON.parse(_this.newBusiness_Selectall.business_appraisal[0].appraisal_image)
-				// console.log("aa",_this.$refs.lbtload._data.lists)
-				for(let i = 0;i < zs_img.length;i++){
-					_this.$refs.yyzzload._data.lists.push({'url' : zs_img[i]})
-				}
-				
-				//轮播图赋值 
-				if(_this.newBusiness_Selectall.business_images != null || _this.newBusiness_Selectall.business_images == ''){
-					let lbt_img = JSON.parse(_this.newBusiness_Selectall.business_images)
-					for(let i = 0;i < lbt_img.length;i++){
-						_this.$refs.lbtload._data.lists.push({'url' : lbt_img[i]})
-					}
-					console.log("lbt_img",lbt_img)
-				}
-				console.log("tjlb",_this.tjlb)
-				console.log("_this.newBusiness_Selectall.business_img[0].business_image_injson",_this.newBusiness_Selectall.business_img[0].business_image_injson)
-				//商家风光图片赋值
-				if(typeof(_this.newBusiness_Selectall.business_img[0].business_image_injson) == 'undefined' || _this.newBusiness_Selectall.business_img[0].business_image_injson == ' '){
+					if(_this.newBusiness_Selectall.business_img[0].business_img_contentjson){
+						var fgwz_img = JSON.parse(_this.newBusiness_Selectall.business_img[0].business_img_contentjson)
+					}else{
+						var fgwz_img = []
 					
-					
-				}else{
-					let fg_img = JSON.parse(_this.newBusiness_Selectall.business_img[0].business_image_injson)
-					console.log("fg_imgfff",fg_img)
-					
-					for(let i = 0;i < fg_img.length;i++){
-						if(i >= _this.tjlb.length){
-							_this.tjlb.push({
-								id: i + 1,
-								tjtext: '',
-								image: ''
-							})
-						}
-						// console.log("aaa",fg_img[i])
-						console.log("_this.tjlb[i]",_this.tjlb[i])
-						_this.tjlb[i].image = fg_img[i]
 					}
-					// console.log("fg_img",fg_img)
-				}
-				//商家风光文字赋值
-				if(_this.newBusiness_Selectall.business_img[0].business_img_contentjson != ' '){
-					let fgwz_img = JSON.parse(_this.newBusiness_Selectall.business_img[0].business_img_contentjson)
 					// console.log("fgwz_imgdd",fgwz_img)
 					for(let i = 0;i < fgwz_img.length;i++){
 						// console.log("aaa",fgwz_img[i])
@@ -346,6 +301,68 @@
 					// console.log("fgwz_img",fgwz_img)
 				 }
 			})
+			
+			// .catch((error_res)=>{
+			// 	console.log(error_res)
+			// 	let res = error_res.data
+			// 	//为新数组赋值
+			// 	_this.newBusiness_Selectall = JSON.parse(JSON.stringify(res.data[0]))
+				
+			// 	//为对比数组赋值
+			// 	_this.oldBusiness_Selectall = JSON.parse(JSON.stringify(res.data[0]))
+			// 	//企业证书赋值
+			// 	console.log("_this.OldBusiness_Selectall",_this.oldBusiness_Selectall)
+			// 	console.log("_this.newBusiness_Selectall",_this.newBusiness_Selectall)
+			// 	let zs_img = JSON.parse(_this.newBusiness_Selectall.business_appraisal[0].appraisal_image)
+			// 	// console.log("aa",_this.$refs.lbtload._data.lists)
+			// 	for(let i = 0;i < zs_img.length;i++){
+			// 		_this.$refs.yyzzload._data.lists.push({'url' : zs_img[i]})
+			// 	}
+				
+			// 	//轮播图赋值 
+			// 	if(_this.newBusiness_Selectall.business_images != null || _this.newBusiness_Selectall.business_images == ''){
+			// 		let lbt_img = JSON.parse(_this.newBusiness_Selectall.business_images)
+			// 		for(let i = 0;i < lbt_img.length;i++){
+			// 			_this.$refs.lbtload._data.lists.push({'url' : lbt_img[i]})
+			// 		}
+			// 		console.log("lbt_img",lbt_img)
+			// 	}
+			// 	console.log("tjlb",_this.tjlb)
+			// 	console.log("_this.newBusiness_Selectall.business_img[0].business_image_injson",_this.newBusiness_Selectall.business_img[0].business_image_injson)
+			// 	//商家风光图片赋值
+			// 	if(typeof(_this.newBusiness_Selectall.business_img[0].business_image_injson) == 'undefined' || _this.newBusiness_Selectall.business_img[0].business_image_injson == ' '){
+					
+					
+			// 	}else{
+			// 		let fg_img = JSON.parse(_this.newBusiness_Selectall.business_img[0].business_image_injson)
+			// 		console.log("fg_imgfff",fg_img)
+					
+			// 		for(let i = 0;i < fg_img.length;i++){
+			// 			if(i >= _this.tjlb.length){
+			// 				_this.tjlb.push({
+			// 					id: i + 1,
+			// 					tjtext: '',
+			// 					image: ''
+			// 				})
+			// 			}
+			// 			// console.log("aaa",fg_img[i])
+			// 			console.log("_this.tjlb[i]",_this.tjlb[i])
+			// 			_this.tjlb[i].image = fg_img[i]
+			// 		}
+			// 		// console.log("fg_img",fg_img)
+			// 	}
+			// 	//商家风光文字赋值
+			// 	if(_this.newBusiness_Selectall.business_img[0].business_img_contentjson != ' '){
+			// 		let fgwz_img = JSON.parse(_this.newBusiness_Selectall.business_img[0].business_img_contentjson)
+			// 		// console.log("fgwz_imgdd",fgwz_img)
+			// 		for(let i = 0;i < fgwz_img.length;i++){
+			// 			// console.log("aaa",fgwz_img[i])
+			// 			_this.tjlb[i].tjtext = fgwz_img[i]
+						
+			// 		}
+			// 		// console.log("fgwz_img",fgwz_img)
+			// 	 }
+			// })
 
 		},
 		methods: {
@@ -651,9 +668,7 @@
 					if(zs_img == null){
 						zs_img = []
 					}
-					console.log("_this.newBusiness_Selectall.appraisal_image",_this.newBusiness_Selectall.appraisal_image)
-					console.log("zs_img",zs_img)
-					if(zs_img != []){
+					if(!zs_img){
 						for (let i = 0; i < zs_img.length; i++) {
 							// console.log("i", i)
 							// console.log("this.oldBusiness_Selectall.appraisal_image.length", zs_img.length)

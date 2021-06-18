@@ -457,8 +457,8 @@
 			},
 			sdsdk(){
 					let token = uni.getStorageSync('token'); //从缓存数据中获取token
-					// uni.setStorageSync('token',"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2Mi5nbmxlb24ueHl6IiwiaWF0IjoxNjIzOTk1NTgyLCJkYXRhIjp7InVzZXJpZCI6MTB9LCJzY29wZXMiOiJyb2xlX3JlZnJlc2giLCJleHAiOjE2MjY1ODc1ODJ9.W2xxEqwX5UbEsuYBY1HmgyBQbemJMrM-bL91jhG-_Ac");
-					// let token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2Mi5nbmxlb24ueHl6IiwiaWF0IjoxNjIzOTk1NTgyLCJkYXRhIjp7InVzZXJpZCI6MTB9LCJzY29wZXMiOiJyb2xlX3JlZnJlc2giLCJleHAiOjE2MjY1ODc1ODJ9.W2xxEqwX5UbEsuYBY1HmgyBQbemJMrM-bL91jhG-_Ac"
+					// uni.setStorageSync('token',"");
+					// let token = ""
 						let _this = this
 						var data ={
 							url : window.location.href.split('#')[0],
