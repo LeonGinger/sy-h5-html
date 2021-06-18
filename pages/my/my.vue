@@ -205,7 +205,7 @@
 				 _this.verify_if=_this.uinfo.business.verify_if
 				 _this.business_name = res.data.business.business_name
 				 _this.business_images  = res.data.business.business_images 
-				 _this.business_id  = res.data.business.business_id 
+				 _this.business_id  = res.data.business.id 
 				  console.log("res",res.data[0])
 				 if(_this.uinfo.role_id == 2 || _this.uinfo.role_id == 3){
 					_this.$api.business_selectall().then((res) =>{
@@ -457,6 +457,8 @@
 			},
 			sdsdk(){
 					let token = uni.getStorageSync('token'); //从缓存数据中获取token
+					// uni.setStorageSync('token',"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2Mi5nbmxlb24ueHl6IiwiaWF0IjoxNjIzOTk1NTgyLCJkYXRhIjp7InVzZXJpZCI6MTB9LCJzY29wZXMiOiJyb2xlX3JlZnJlc2giLCJleHAiOjE2MjY1ODc1ODJ9.W2xxEqwX5UbEsuYBY1HmgyBQbemJMrM-bL91jhG-_Ac");
+					// let token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2Mi5nbmxlb24ueHl6IiwiaWF0IjoxNjIzOTk1NTgyLCJkYXRhIjp7InVzZXJpZCI6MTB9LCJzY29wZXMiOiJyb2xlX3JlZnJlc2giLCJleHAiOjE2MjY1ODc1ODJ9.W2xxEqwX5UbEsuYBY1HmgyBQbemJMrM-bL91jhG-_Ac"
 						let _this = this
 						var data ={
 							url : window.location.href.split('#')[0],

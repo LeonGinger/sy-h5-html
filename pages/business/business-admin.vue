@@ -92,6 +92,27 @@
 				}
 				
 				// _this.list.responsible_name = res.data[0].responsible_name
+			}).catch((error_res)=>{
+				let business_selectall = error_res.data.data[0]
+				_this.business_id= business_selectall.id;
+				_this.bverify_if=business_selectall.verify_if
+				// 商家名称超过10个字后面的字变为省略号
+				if(business_selectall.business_name.length >= 10){
+					_this.list[0].business_name = business_selectall.business_name.substring(0,10)+"..."
+				}else{
+					_this.list[0].business_name = business_selectall.business_name
+				}
+				//联系人名称
+				_this.list[0].responsible_name = business_selectall.responsible_name
+				//联系电话
+				_this.list[0].responsible_phone = business_selectall.responsible_phone
+				_this.id = business_selectall.id
+				//商家图片
+				if(business_selectall.business_images != null){
+					let image = JSON.parse(business_selectall.business_images)
+					_this.list[0].images = image[0]
+					_this.ck = 1
+				}
 			})
 		},
 		methods: {

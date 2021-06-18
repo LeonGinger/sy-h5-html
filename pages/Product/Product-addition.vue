@@ -131,6 +131,7 @@
 	export default {
 		data() {
 			return {
+				model:'',
 				action: '',//后端接口地址
 				scrollTop: 0,
 				// 表单
@@ -487,7 +488,6 @@
 									})
 								}
 								
-								
 								//请求添加商品接口
 								_this.newcgg=_this.cgg+_this.gg; //数量加规格
 								_this.newcbz=_this.cbz+_this.bz; 
@@ -515,7 +515,26 @@
 										fail: () => {},
 										complete: () => {}
 									});
-								});
+								}).catch((error)=>{
+									uni.hideLoading();
+									uni.showModal({
+										title: "提交失败",
+										content: error.data.message,
+										showCancel: false,
+										confirmColor: '#0ABB9A',
+										success:function(res){
+											uni.navigateTo({
+												url: 'Product-list',
+												success: res => {},
+												fail: () => {},
+												complete: () => {}
+											});
+											
+										}
+									})
+									//重置本页面
+									
+								})
 								
 							} else if (res.cancel) {
 								console.log('用户点击取消');
