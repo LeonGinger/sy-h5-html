@@ -20,6 +20,16 @@
 					<u-form-item label="联系方式:">
 						<u-input placeholder="请输入商户联系人的手机号码" v-model="shuju.responsible_phone" type="number" maxlength="11"/>
 					</u-form-item>
+					<u-form-item label="验证码:">
+						<u-input placeholder="请输入验证码" v-model="shuju.responsible_phonecode" type="number" maxlength="11"/>
+						<view class="send_code" 
+							  @click="send_Code" type="default" :disabled="!show" 
+							  :style="!timer ? '':'background:#cccccc'" >
+							{{!timer ? '发送验证码':count+'s'}}
+						</view>
+					</u-form-item>
+					
+					
 				</u-form>
 				<view class="utitlebox" style="margin-top: 30upx; margin-bottom: 20upx;">
 					<view class="utitleblock"></view>
@@ -53,6 +63,11 @@
 	export default {
 		data() {
 			return {
+				userinfo:[],
+				yzm:false,
+				show:true,
+				TIME_COUNT:60,//验证码倒计时60s
+				count:'',
 				cklt:false,
 				bgHeight: '',
 				//表单
@@ -73,6 +88,58 @@
 			}
 		},
 		methods: {
+			noInput(e){
+				this.fu = true
+				if(this.shuju.responsible_phone == this.userinfo.phone || shuju.responsible_phone == ''){
+					this.yzm = false
+					
+				}
+			},
+			send_Code(){
+				let _this = this
+				if(this.shuju.responsible_phone.length < 11 || this.shuju.responsible_phone == this.userinfo.phone){
+					uni.showToast({
+						icon:'none',
+						title:'手机号输入有误'
+					})
+				}else{
+					if (!this.timer) {
+						this.count = this.TIME_COUNT;
+						this.show = false;
+						_this.$api.iphone_code({mobile : this.shuju.responsible_phone}).then((res)=>{
+							console.log("res",res)
+								uni.showModal({
+									title:"提示",
+									content:"手机二维码已发送\n请你打开短信查看\n",
+									showCancel:false,
+									confirmColor: '#0ABB9A'
+								})
+												
+						}).catch((err) => {
+							console.log("err", err.data.message)
+							uni.showModal({
+								title: '提示',
+								content: err.data.message,
+								confirmColor: '#0ABB9A',
+								showCancel: false,
+								success: function(res) {
+									_this.shuju.responsible_phone == _this.userinfo.phone
+								}
+							})
+
+						})
+						this.timer = setInterval(() => {
+						  if (this.count > 0 && this.count <= this.TIME_COUNT) {
+							this.count--;
+						  } else {
+							this.show = true;
+							clearInterval(this.timer);
+							this.timer = null;
+						  }
+						}, 1000)
+					  }
+				}
+			},
 			ck() {
 				this.cklt = true
 			},
@@ -290,7 +357,8 @@
 		onLoad() {
 			let _this=this
 			 let sjzs=[];
-			 _this.$api.userinfo().then((res) =>{			
+			 _this.$api.userinfo().then((res) =>{
+				 this.userinfo = res.data
 				 if(res.data.business){					
 					 _this.verify_if=res.data.business.verify_if
 					_this.shuju.business_name=res.data.business.business_name
@@ -382,5 +450,14 @@
 	.ltimg {
 		height: 830upx;
 		width: 640upx;
+	}
+	.send_code{
+		background-color: #0abb9a;
+		white-space:nowrap;
+		margin-left: 8rpx;
+		padding: 8rpx;
+		font-size: 24rpx;
+		color: #FFFFFF;
+		border-radius: 15rpx;
 	}
 </style>

@@ -457,8 +457,10 @@
 			},
 			sdsdk(){
 					let token = uni.getStorageSync('token'); //从缓存数据中获取token
+					//仅用于测试
 					// uni.setStorageSync('token',"");
 					// let token = ""
+					// TEST END
 						let _this = this
 						var data ={
 							url : window.location.href.split('#')[0],
