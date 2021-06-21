@@ -20,8 +20,8 @@
 					<u-form-item label="联系方式:">
 						<u-input placeholder="请输入商户联系人的手机号码" v-model="shuju.responsible_phone" type="number" maxlength="11"/>
 					</u-form-item>
-					<u-form-item label="验证码:">
-						<u-input placeholder="请输入验证码" v-model="shuju.responsible_phonecode" type="number" maxlength="11"/>
+					<u-form-item label="验证码:" v-if="shuju.responsible_phone">
+						<u-input placeholder="请输入验证码" v-model="shuju.responsible_phonecode" type="number" minlength="4" maxlength="7"/>
 						<view class="send_code" 
 							  @click="send_Code" type="default" :disabled="!show" 
 							  :style="!timer ? '':'background:#cccccc'" >
@@ -63,6 +63,8 @@
 	export default {
 		data() {
 			return {
+				timer:'',
+				model:'',
 				userinfo:[],
 				yzm:false,
 				show:true,
@@ -106,7 +108,7 @@
 					if (!this.timer) {
 						this.count = this.TIME_COUNT;
 						this.show = false;
-						_this.$api.iphone_code({mobile : this.shuju.responsible_phone}).then((res)=>{
+						_this.$api.iphonebs_code({mobile : this.shuju.responsible_phone}).then((res)=>{
 							console.log("res",res)
 								uni.showModal({
 									title:"提示",
@@ -205,7 +207,21 @@
 						title:'您的手机号码有误',
 						icon:'none'
 					})
-				}	
+				}
+				else if(!this.shuju.responsible_phonecode){
+						uni.hideLoading()
+						uni.showToast({
+							title:'请输入正确短信验证码',
+							icon:'none'
+						})
+				}
+				else if(this.shuju.responsible_phonecode.length<6){
+						uni.hideLoading()
+						uni.showToast({
+							title:'请输入正确短信验证码',
+							icon:'none'
+						})
+				}
 				else if(this.$refs.uUpload.lists.length == 0 ){
 					uni.hideLoading()
 					uni.showToast({
@@ -306,6 +322,7 @@
 				let _this = this;
 				console.log("状态",_this.verify_if);
 				console.log("要上传的数组",_this.shuju)
+
 				if(!this.shuju.appraisal_img ){
 					uni.hideLoading()
 					uni.showToast({
@@ -314,8 +331,18 @@
 					})					
 				}else{
 					if(_this.verify_if != 2){
+						//首次入驻申请
 						this.$api.business_applyad(_this.shuju).then((res) =>{
+							
 							uni.hideLoading()
+							if(res.code=='33'){
+								uni.hideLoading()
+								uni.showToast({
+									title:'验证码错误或过期',
+									icon:'none'
+								})
+								return;
+							}
 							console.log("res",res)
 							uni.showModal({
 								title:"申请成功",
@@ -330,11 +357,16 @@
 									}
 								}
 							})
-						})
+						}).catch((error_res)=>{
+								uni.hideLoading()
+								uni.showToast({
+									title:'请求失败',
+									icon:'none'
+								})
+						});
 					}else{
+						//二次提交(入驻不通过,重新提交)
 						this.$api.business_open(_this.shuju).then((res) =>{
-							uni.hideLoading()
-							console.log("res",res)
 							uni.showModal({
 								title:"申请成功",
 								content:"将在3个工作日内给予您答复\n请多关注公众号推送\n",
@@ -348,7 +380,13 @@
 									}
 								}
 							})
-						})
+						}).catch((error_res)=>{
+								uni.hideLoading()
+								uni.showToast({
+									title:'请求失败',
+									icon:'none'
+								})
+						});
 					}
 				}
 				
@@ -359,6 +397,11 @@
 			 let sjzs=[];
 			 _this.$api.userinfo().then((res) =>{
 				 this.userinfo = res.data
+				 //如果用户有手机号 回显
+				 if(res.data.phone){
+					 this.shuju.responsible_phone = res.data.phone;
+				 }
+				 //如果是商家
 				 if(res.data.business){					
 					 _this.verify_if=res.data.business.verify_if
 					_this.shuju.business_name=res.data.business.business_name
