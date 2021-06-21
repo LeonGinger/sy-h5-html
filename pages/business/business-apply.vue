@@ -359,10 +359,17 @@
 							})
 						}).catch((error_res)=>{
 								uni.hideLoading()
-								uni.showToast({
-									title:'请求失败',
-									icon:'none'
-								})
+								if(error_res.data.code==33){
+									uni.showToast({
+										title:error_res.data.message,
+										icon:'none'
+									})
+								}else{
+									uni.showToast({
+										title:'请求失败',
+										icon:'none'
+									})
+								}
 						});
 					}else{
 						//二次提交(入驻不通过,重新提交)
@@ -382,10 +389,18 @@
 							})
 						}).catch((error_res)=>{
 								uni.hideLoading()
-								uni.showToast({
-									title:'请求失败',
-									icon:'none'
-								})
+								if(error_res.data.code==33){
+									uni.showToast({
+										title:error_res.data.message,
+										icon:'none'
+									})
+								}else{
+									uni.showToast({
+										title:'请求失败',
+										icon:'none'
+									})
+								}
+
 						});
 					}
 				}

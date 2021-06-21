@@ -107,7 +107,14 @@ export function iphone_code(data){
   data
  )
 }
-
+//商家入驻发送验证码
+export function iphonebs_code(data){
+ return request.baseRequest(
+  'iphonebs_code',
+  'POST',
+  data
+ )
+}
 //员工目录
 export function my_user(data){
  return request.baseRequest(
