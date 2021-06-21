@@ -551,12 +551,12 @@
 			
 			// },
 			btback() {
-				// uni.navigateTo({
-				// 	url: 'Product-list'
-				// })
-				uni.navigateBack({
-					
+				uni.navigateTo({
+					url: 'Product-list'
 				})
+				// uni.navigateBack({
+					
+				// })
 			}
 
 		}

@@ -8,7 +8,7 @@
 
 			<text class="tips" v-if="State==1 || State==2">{{!my_user.length ? '(点击下方按钮可添加员工)':'(向左滑动可移除该员工)'}}</text>
 			<view>	
-					<u-swipe-action :show="item.show" :index="index" v-for="(item, index) in my_user" :key="item.id" v-if="index ==0">
+					<u-swipe-action :show="item.show" :index="index" v-for="(item, index) in my_user" :key="item.id" v-if="index ==0 && item.role_id==2">
 						<view class="item u-border-bottom">
 							<view class="imgbox">
 							<image :src="item.user_image"></image>

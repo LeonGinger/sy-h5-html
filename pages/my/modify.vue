@@ -127,9 +127,13 @@
 		},
 		methods: {		
 			back(){
-				uni.navigateBack({
-					
+				console.log(1)
+				uni.switchTab({
+					url: '/pages/my/my'
 				})
+				// uni.navigateBack({
+					
+				// })
 			},
 			async jump(){
 				let _this=this;
