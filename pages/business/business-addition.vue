@@ -213,7 +213,7 @@
 				}
 			})
 			// 必须要在onReady生命周期，因为onLoad生命周期组件可能尚未创建完毕
-			this.$refs.newBusinessform.setRules(this.newBusinessform);
+			// this.$refs.newBusinessform.setRules(this.newBusinessform);
 
 		},
 		onPageScroll(e) {
