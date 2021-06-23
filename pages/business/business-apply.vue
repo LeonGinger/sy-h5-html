@@ -20,7 +20,7 @@
 					<u-form-item label="联系方式:">
 						<u-input placeholder="请输入商户联系人的手机号码" v-model="shuju.responsible_phone" type="number" maxlength="11"/>
 					</u-form-item>
-					<u-form-item label="验证码:" v-if="shuju.responsible_phone">
+					<u-form-item label="验证码:" v-if="shuju.responsible_phone && regphonechanger">
 						<u-input placeholder="请输入验证码" v-model="shuju.responsible_phonecode" type="number" minlength="4" maxlength="7"/>
 						<view class="send_code" 
 							  @click="send_Code" type="default" :disabled="!show" 
@@ -63,6 +63,7 @@
 	export default {
 		data() {
 			return {
+				regphonechanger:false,//是否需要鸭子毛
 				timer:'',
 				model:'',
 				userinfo:[],
@@ -208,19 +209,21 @@
 						icon:'none'
 					})
 				}
-				else if(!this.shuju.responsible_phonecode){
-						uni.hideLoading()
-						uni.showToast({
-							title:'请输入正确短信验证码',
-							icon:'none'
-						})
-				}
-				else if(this.shuju.responsible_phonecode.length<6){
-						uni.hideLoading()
-						uni.showToast({
-							title:'请输入正确短信验证码',
-							icon:'none'
-						})
+				else if(this.regphonechanger){
+					if(!this.shuju.responsible_phonecode){
+							uni.hideLoading()
+							uni.showToast({
+								title:'请输入正确短信验证码',
+								icon:'none'
+							})
+					}
+					if(this.shuju.responsible_phonecode.length<6){
+							uni.hideLoading()
+							uni.showToast({
+								title:'请输入正确短信验证码',
+								icon:'none'
+							})
+					}
 				}
 				else if(this.$refs.uUpload.lists.length == 0 ){
 					uni.hideLoading()
@@ -320,6 +323,7 @@
 			},
 			tijiao(){
 				let _this = this;
+				_this.shuju.regphonechanger = _this.regphonechanger;
 				console.log("状态",_this.verify_if);
 				console.log("要上传的数组",_this.shuju)
 
@@ -352,7 +356,7 @@
 								success: (res) => {
 									if(res.confirm){
 										wx.reLaunch({
-											url:'../my/my'
+											url:'../index/index'
 										})	
 									}
 								}
@@ -382,7 +386,7 @@
 								success: (res) => {
 									if(res.confirm){
 										wx.reLaunch({
-											url:'../my/my'
+											url:'../index/index'
 										})	
 									}
 								}
@@ -411,10 +415,23 @@
 			let _this=this
 			 let sjzs=[];
 			 _this.$api.userinfo().then((res) =>{
+				 if(res.code==406){
+					 uni.showToast({
+					 	title:"未登录,授权登录中...",
+					 	icon:'none'
+					 })
+					 setTimeout(()=>{
+					 	window.location.replace("https://sy.zsicp.com/h5/#/pages/wxauthorize/wxauthorize");  //失败跳转		
+					 },1000)
+					 return;
+				 }
 				 this.userinfo = res.data
 				 //如果用户有手机号 回显
 				 if(res.data.phone){
 					 this.shuju.responsible_phone = res.data.phone;
+					 this.regphonechanger = false;
+				 }else{
+					 this.regphonechanger=  true;
 				 }
 				 //如果是商家
 				 if(res.data.business){					
@@ -435,11 +452,20 @@
 						}
 						
 					}
-					
-					
 					_this.shuju.appraisal_img=res.data.business.appraisal_image
 				 }
 				  
+				 }).catch((error_res)=>{
+					 if(error_res.data.code==406){
+						uni.showToast({
+							title:"未登录,授权登录中...",
+							icon:'none'
+						})
+						setTimeout(()=>{
+							window.location.replace("https://sy.zsicp.com/h5/#/pages/wxauthorize/wxauthorize");  //失败跳转		
+						},1000)
+						return;
+					 }
 				 })
 		},
 		onReady() {
@@ -454,6 +480,11 @@
 				}
 			})
 		},
+		watch:{
+			// shuju(val,oldval){
+			// 	if(val.responsible_phone!=){}
+			// }
+		}
 	}
 </script>
 

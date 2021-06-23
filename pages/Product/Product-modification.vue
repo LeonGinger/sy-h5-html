@@ -9,8 +9,10 @@
 		<view class="whitebox">
 			<view class="utitlebox">
 				<view class="utitleblock"></view>
+				<!-- <text class="uxtitle" style="color: red;margin-left: 10upx;">*</text> -->
 				<text class="utitle">修改轮播图</text>
 				<text class="uxtitle">（最多上传6张图片）</text>
+				
 			</view>
 			<view class="lbt">
 				<u-upload ref="lbtload" :action="action" :auto-upload="false" max-count="6" :model="model"></u-upload>
@@ -24,31 +26,35 @@
 				<view class="utitleblock"></view>
 				<text class="utitle">修改商品信息</text>
 			</view>
-			<u-form  style="margin-left: 20upx;margin-top: 15upx;">
-				<u-form-item label="商品名称:">
-					<u-input placeholder="请输入商品名称" v-model="cname"  maxlength='14'/>
+			<u-form :model="form" ref="forminfo"  style="margin-left: 20upx;margin-top: 15upx;" :error-type="errorType">
+				<u-form-item label="商品名称:" prop="cname" required>
+					<u-input placeholder="请输入商品名称" v-model="form.cname"  maxlength='14'/>
 				</u-form-item>
-				<u-form-item label="生源产地:">
-					<u-input placeholder="请输入生源产地" v-model="cyd"  maxlength='14'/>
+				<u-form-item label="生源产地:" prop="cyd" required>
+					<u-input placeholder="请输入生源产地" v-model="form.cyd"  maxlength='14'/>
 				</u-form-item>
-			<u-form-item label="商品规格:">
-				<u-input placeholder="请输入商品规格" v-model="cgg" type='number' maxlength='5'/>
+			<u-form-item label="商品规格:" prop="newcgg" required>
+				<u-input placeholder="请输入商品规格" v-model="form.newcgg"  maxlength='5'/>
+<!-- 				<u-input placeholder="请输入商品规格" v-model="form.cgg" type='number' maxlength='5'/>
 				<span style="position: absolute; margin-left: 85upx;margin-top: -1.5upx;" v-if="cgg">{{gg}}</span>
 				<view class="gg" @click="ggshow = true">规格</view>					
-				<u-select v-model="ggshow" :list="list"  @confirm="confirmgg"></u-select>
+				<u-select v-model="ggshow" :list="list"  @confirm="confirmgg"></u-select> -->
 			</u-form-item>
-				<u-form-item label="生产日期:">
-					<view @click="show = true" :style="input=='' ? 'color:#C0C4CC':'color:black'" class="scrq" style="width: 420upx;">{{ input.slice(0,10) }}</view>
+				<u-form-item label="生产日期:" prop="input" required>
+					<view @click="show = true" :style="input=='请选择生产日期' ? 'color:#C0C4CC':'color:black'" class="scrq" style="width: 420upx;">{{ input.slice(0,10) }}</view>
+					<!-- <u-icon name="close-circle-fill" color="#c1c1cb" size="30"  @click="qxscrqi" v-if="input!=''"></u-icon> -->
+					<u-icon style="margin-top: 10rpx;margin-left: -8rpx;" size="20" name="arrow-down-fill"></u-icon>
 				</u-form-item>
 				<u-picker mode="time" v-model="show" :params="params" @confirm="confirm"></u-picker>
-				<u-form-item label="保质日期:">
-					<u-input placeholder="请输入商品保质期" v-model="cbz" maxlength='3'  type="number"/>
+				<u-form-item label="保质期限:" prop="newcbz" required>
+					<u-input placeholder="请输入商品保质期" v-model="form.newcbz" maxlength='3' />
+<!-- 					<u-input placeholder="请输入商品保质期" v-model="cbz" maxlength='3'  type="number"/>
 					<span style="position: absolute; margin-left: 85upx;margin-top: -1.5upx;" v-if="cbz">{{bz}}</span>
 					<view class="gg" @click="bzshow = true">期限</view>	
-					<u-select v-model="bzshow" :list="lists"  @confirm="confirmbz"></u-select>
+					<u-select v-model="bzshow" :list="lists"  @confirm="confirmbz"></u-select> -->
 				</u-form-item>
-				<u-form-item label="商品售价:">
-					<u-input placeholder="请输入商品的价格(元)" v-model="cprice"  type="number"  maxlength='5'/>
+				<u-form-item label="商品售价:" prop="cprice" required>
+					<u-input placeholder="请输入商品的价格(元)" v-model="form.cprice"  type="number"  maxlength='5'/>
 				</u-form-item>
 			</u-form>
 		</view>
@@ -82,6 +88,7 @@
 							
 							<view @click="showjc = true" :style="inputjc=='请选择检疫检测日期' ? 'color:#C0C4CC':'color:black'" class="scrq" style="width: 420upx;">{{ inputjc ? inputjc.slice(0,10) : '请选择检疫检测日期' }}</view>
 							<u-icon name="close-circle-fill" color="#c1c1cb" size="30"  @click="qxinputjc" v-if="inputjc != '请选择检疫检测日期'"></u-icon>
+							<u-icon style="margin-top: 10rpx;margin-left: -8rpx;" size="20" name="arrow-down-fill" v-if="inputjc == '请选择检疫检测日期'"></u-icon>
 						</u-form-item>
 						<u-picker mode="time" v-model="showjc" :params="paramsjc" @confirm="confirmjc"></u-picker>
 						<u-form-item label="检验地点:">
@@ -131,7 +138,38 @@
 	export default {
 		data() {
 			return {
-
+				model:'',
+				errorType:['toast','border-bottom'],
+				forminfo_rules:{
+					cname:[
+							{required: true,message: '请输入商品名称',trigger: 'blur,change'},
+					],
+					cyd:[
+							{required: true,message: '请输入生源产地',trigger: 'blur,change'},
+					],
+					newcgg:[
+							{required: true,message: '请输入商品规格',trigger: 'blur,change'},
+					],
+					newcbz:[
+							{required: true,message: '请输入商品保质期',trigger: 'blur,change'},
+					],
+					cprice:[
+							{required: true,message: '请输入商品的价格(元)',trigger: 'blur,change'},
+					],
+					input:[
+						{
+							validator: (rule, value, callback) => {
+								if(this.input){
+									return true
+								}else{
+									return false
+								}
+							},
+							message: '请选择生产日期',
+							trigger: ['change','blur'],
+						}
+					],
+				},
 				action: '',//后端接口地址
 				scrollTop: 0,
 				// 表单
@@ -141,6 +179,18 @@
 				cklt: false,
 				cklt2: false,
 				queding:false,
+				// 新表单
+				form:{
+					cname: '',
+					cyd: '',
+					cgg: '',
+					input: '',
+					inputjc: '',
+					cbz: '',
+					cprice: '',
+					ypname: '',
+					jcdd: '',
+				},
 				// 表单
 				cname: '',
 				cyd: '',
@@ -238,7 +288,11 @@
 			],
 			}
 		},
+		onReady() {
+			// 必须要在onReady生命周期，因为onLoad生命周期组件可能尚未创建完毕
+			this.$refs.forminfo.setRules(this.forminfo_rules);
 		
+		},
 		onLoad(res) {
 			let _this=this;
 			let id=res.index;
@@ -248,6 +302,14 @@
 			let lastzs=[];
 			 _this.$api.find_menu({menu_id:id}).then((res) =>{
 					_this.thismenu=res.data
+					
+					_this.form.cname = res.data.menu_name;
+					_this.form.cyd = res.data.menu_address;
+					_this.form.newcgg = res.data.menu_weight;
+					// _this.form.cbz = res.data.quality_time;
+					_this.form.newcbz = res.data.quality_time; 
+					_this.form.cprice = res.data.menu_money;
+					
 					console.log("menu",_this.thismenu)
 					console.log("monitoring_time",res.data.menu_monitor[0].monitoring_time)
 					if(res.data.menu_monitor[0].monitoring_time == '0000-00-00 00:00:00'){
@@ -290,7 +352,7 @@
 				_this.gg=_this.thismenu.menu_weight.replace(_this.thismenu.menu_weight.match(/\d+/g),"")
 				
 				_this.input=_this.thismenu.production_time //生产日期
-				_this.cbz=_this.thismenu.quality_time.match(/\d+/g)//保质日期
+				_this.cbz=_this.thismenu.quality_time.match(/\d+/g)//保质期限
 				_this.bz=_this.thismenu.quality_time.replace(_this.thismenu.quality_time.match(/\d+/g),"")
 				
 				_this.cprice=_this.thismenu.menu_money //商品售价	
@@ -300,6 +362,9 @@
 				if(res.data.menu_certificate){
 					for(let w=0;w<res.data.menu_certificate.length;w++){
 						res.data.menu_certificate[w].certificate_image= JSON.parse(res.data.menu_certificate[w].certificate_image)								
+						if(res.data.menu_certificate[w].certificate_image==null){
+							break;
+						}
 						for(let p=0;p<res.data.menu_certificate[w].certificate_image.length;p++){
 							lastzs.push({'url':res.data.menu_certificate[w].certificate_image[p]});
 							_this.$refs.spzsload.lists.push(lastzs[p]);  
@@ -328,6 +393,9 @@
 				this.scrollTop = e.scrollTop;
 		},
 		methods: {
+			qxscrqi(){
+				this.input = '请选择生产日期';
+			},
 			qxinputjc(){
 				this.inputjc='请选择检疫检测日期';
 			},
@@ -418,340 +486,351 @@
 				this.year = time.getFullYear();
 				this.month = Number(time.getMonth()) + 1;
 				this.day = time.getDate();
-		
-				if(this.cname == '' || this.cyd == '' || this.cgg == '' || this.input == '' || this.cbz == '' ||  this.cprice == ''){
-					uni.showToast({
-						title:'请将信息输入完整',
-						icon:'none'
-					})
-				}
-				
-				else if(this.$refs.lbtload.lists.length == 0 ){
-					uni.showToast({
-						title:'请添加轮播图',
-						icon:'none'
-					})					
-				}
-				else if(this.input.slice(0,4) == this.year && this.input.slice(5,7)>this.month){
-						uni.showToast({
-							title:'生产日期有误',
-							icon:'none'
-						})				
-				}
-				else if(this.input.slice(0,4) == this.year && this.input.slice(5,7)>this.month && this.input.slice(8,10)>this.day){
-					uni.showToast({
-						title:'生产日期有误',
-						icon:'none'
-					})					
-				}
-				else if(this.inputjc && this.inputjc.slice(0,4) == this.year && this.inputjc.slice(5,7)>this.month){
-						uni.showToast({
-							title:'检测日期有误',
-							icon:'none'
-						})				
-				}
-				else if(this.inputjc && this.inputjc.slice(0,4) == this.year && this.inputjc.slice(5,7)>this.month && this.inputjc.slice(8,10)>this.day){
-					uni.showToast({
-						title:'检测日期有误',
-						icon:'none'
-					})					
-				}
-				else if(this.$refs.jyjcload.lists.length == 0 && this.ypname ||  this.$refs.jyjcload.lists.length == 0 && this.jcdd || this.$refs.jyjcload.lists.length == 0 &&  this.inputjc !='请选择检疫检测日期'){
-					console.log("this.$refs.jyjcload.lists.length",this.$refs.jyjcload.lists.length)
-					console.log("noimg");
-					uni.showToast({
-						title:'请完善检测检疫信息',
-						icon:'none'
-					})					
-				}
-				else if(!this.ypname && this.$refs.jyjcload.lists.length != 0  ||  !this.ypname && this.jcdd || !this.ypname && this.inputjc !='请选择检疫检测日期'){
-					console.log("noname");
-					uni.showToast({
-						title:'请完善检测检疫信息',
-						icon:'none'
-					})					
-				}
-				else if(!this.jcdd && this.$refs.jyjcload.lists.length != 0  ||  !this.jcdd && this.ypname || !this.jcdd && this.inputjc !='请选择检疫检测日期'){
-					console.log("nodd");
-					uni.showToast({
-						title:'请完善检测检疫信息',
-						icon:'none'
-					})					
-				}
-				else if(this.inputjc =='请选择检疫检测日期' && this.$refs.jyjcload.lists.length != 0  || this.inputjc =='请选择检疫检测日期' && this.inputjc =='请选择检疫检测日期' && this.jcdd){
-					console.log("notime");
-					uni.showToast({
-						title:'请完善检测检疫信息',
-						icon:'none'
-					})					
-				}			
-				// else if (re.test(this.cname)){
-				// 	uni.showToast({
-				// 		title:'商品名称输入有误',
-				// 		icon:'none' 
-				// 	})
-				// }
-				else if(this.gg.length == 0 ){
-					uni.showToast({
-						title:'请选择商品日期的规格',
-						icon:'none'
-					})					
-				}
-				else if (this.ypname && re.test(this.ypname)){
-					uni.showToast({
-						title:'正宗名称输入有误',
-						icon:'none'
-					})
 					
-				}
-				else{
+				this.$refs.forminfo.validate(valid => {
+					if (valid) {	
 					
-					
-					
-					// }, 3000) //  3秒后执行代码
-					
-					
-					uni.showModal({
-						title: '提示',
-						content: '确定修改商品无误',
-						confirmColor: '#0ABB9A',
-						success:async function(res) {
-							_this.queding=true;
-							if (res.confirm) {
-								uni.showLoading({
-									title:"正在上传..."
-								});
-								
-								
-								let lbtList=[];
-								let lbtref=[];
-								let aa=false;
-								for(let i=0;i<_this.$refs.lbtload.lists.length;i++){
-									if(!_this.$refs.lbtload.lists[i].file){
-										lbtref.push(_this.$refs.lbtload.lists[i].url)
-									}else{
-										lbtList.push(_this.$refs.lbtload.lists[i])
-									}
-								}
-								console.log("获取的轮播图图片",lbtref);
-								console.log("要上传的轮播图图片",lbtList);
-								if(lbtList.length != 0){
-								let newlbtList = []; //定义一个新的轮播图数组newlbtList
-								for(let a=0;a <lbtList.length;a++){
-									newlbtList.push(lbtList[a].url) //循环出轮播图里面的blob图片地址，并插入newlbtList数组里					
-								}
-								console.log("去转换的轮播图",newlbtList);
-								for(let k= 0;k <newlbtList.length;k++){ //循环newlbtList数组并请求接口upFile上传图片接口转换图片地址
-											console.log("转换的轮播图",newlbtList[k]);
-										 await _this.$api.upFile(newlbtList[k]).then((res)=>{									
-											let lbt_list = JSON.parse(res[1].data) //成功返回的图片地址转化成json放入lbt_list里	
-											_this.lbtlink.push(lbt_list.data.link) //转换好json的图片地址放入lbtimg数组里
-										})
-										if(_this.lbtlink.length == newlbtList.length){
-											break;
-										}
-									}
-								}
-								let imgb=[];
-								console.log("要上传的轮播图图片解析后",_this.lbtlink);
-								console.log("获取的轮播图片的长度",lbtref.length)
-											
-											
-											
-											
-											
-											
-											
-											
-									
-								//检疫检测图	
-								let jyjcList=[];
-								let jyjcref=[];
-								for(let e=0;e<_this.$refs.jyjcload.lists.length;e++){
-									if(!_this.$refs.jyjcload.lists[e].file){
-										jyjcref.push(_this.$refs.jyjcload.lists[e].url)
-									}else{
-										jyjcList.push(_this.$refs.jyjcload.lists[e])
-									}
-								}
-								console.log("获取的检疫检测图片",jyjcref);
-								console.log("要上传的检疫检测图片",jyjcList);
-								if(jyjcList){
-								let newjyjcList = [];
-								for(let r=0;r <jyjcList.length;r++){
-												
-										newjyjcList.push(jyjcList[r].url) 	
-								}
-												
-								for(let t=0;t<newjyjcList.length;t++){ 
-										await _this.$api.upFile(newjyjcList[t]).then((res)=>{									
-											let jyjc_list = JSON.parse(res[1].data) 
-											_this.jyjclink.push(jyjc_list.data.link) 
-										})
-										if(_this.jyjclink.length == newjyjcList.length){
-											break;
-										}
-									}
-								}
-								let imgc=[];
-								console.log("要上传的检疫检测图片解析后",_this.jyjclink);
-								console.log("获取检疫检测图片的长度",jyjcref.length)
-														
-														
-										
-										
-										
-										
-										
-										
-										
-								//商品证书图	
-								let spzsList=[];
-								let spzsref=[];
-								for(let i=0;i<_this.$refs.spzsload.lists.length;i++){
-									if(!_this.$refs.spzsload.lists[i].file){
-										spzsref.push(_this.$refs.spzsload.lists[i].url)
-									}else{
-										spzsList.push(_this.$refs.spzsload.lists[i])
-									}
-								}
-								console.log("获取的图片",spzsref);
-								console.log("要上传的图片",spzsList);
-								if(spzsList){
-								let newspzsList = [];
-								for(let a=0;a <spzsList.length;a++){
-										newspzsList.push(spzsList[a].url) 			
-								}
-												
-								for(let k= 0;k <newspzsList.length;k++){ 
-										await _this.$api.upFile(newspzsList[k]).then((res)=>{									
-											let spzs_list = JSON.parse(res[1].data) 
-											_this.spzslink.push(spzs_list.data.link) 
-										})
-										if(_this.spzslink.length == newspzsList.length){
-											break;
-										}
-									}
-								}
-								let imgd=[];
-								console.log("要上传的图片解析后",_this.spzslink);
-								console.log("获取图片的长度",spzsref.length)				
-											
-								 // setTimeout(() => {
-								//轮播
-								console.log("要上传的轮播图片的长度",_this.lbtlink.length);
-								for(let b=0;b<lbtref.length;b++){
-										_this.lbtimg.push(lbtref[b])
-									if(_this.lbtimg.length ==lbtref.length ){
-										break;
-									}
-								}		
-								for(let c=0;c<_this.lbtlink.length;c++){
-									imgb.push(_this.lbtlink[c]) 
-									if(imgb.length ==_this.lbtlink.length ){
-										break;
-									}
-								}
-								console.log("_this.lbtimg",_this.lbtimg);
-								console.log("_this.lbtimg,lenght",_this.lbtimg.length);
-								
-								_this.lbtimg=_this.lbtimg.concat(imgb);
-								console.log("合并后的轮播图图片",_this.lbtimg);
-								
-								
-								//检疫检测
-								
-								console.log("要上传检疫检测图片的长度",_this.jyjclink.length);
-								for(let u=0;u<jyjcref.length;u++){
-										_this.jyjcimg.push(jyjcref[u])
-									if(_this.jyjcimg.length ==jyjcref.length ){
-										break;
-									}
-								}		
-									console.log("imgb,lenght",imgb.length);
-								if(_this.jyjclink !=''){
-									for(let z=0;z<_this.jyjclink.length;z++){
-										imgc.push(_this.jyjclink[z]) 
-										if(imgc.length ==_this.jyjclink.length ){
-											break;
-										}
-									}
-									_this.jyjcimg=_this.jyjcimg.concat(imgc);
-								}
-								
-								console.log("_this.jyjcimg",_this.jyjcimg);
-								console.log("_this.jyjcimg,lenght",_this.jyjcimg.length);
-								
-								
-								console.log("合并后的检疫检测图片",_this.jyjcimg);
-								
-								
-								
-								
-								//证书
-								console.log("要上传图片的长度",_this.spzslink.length);
-								for(let b=0;b<spzsref.length;b++){
-										_this.spzsimg.push(spzsref[b])
-									if(_this.spzsimg.length ==spzsref.length ){
-										break;
-									}
-								}		
-								for(let c=0;c<_this.spzslink.length;c++){
-									imgd.push(_this.spzslink[c]) 
-									if(imgd.length ==_this.spzslink.length ){
-										break;
-									}
-								}
-								_this.spzsimg=_this.spzsimg.concat(imgd);
-								console.log("合并后的证书图片",_this.spzsimg);
-								
-								
-								
-								//请求修改商品接口
-								console.log("aaa证书aaa",_this.jyjcimg)
-								console.log("aaa检疫aaa",_this.spzsimg)
-								_this.newcgg=_this.cgg+_this.gg; //数量加规格
-								_this.newcbz=_this.cbz+_this.bz; 
-								 // setTimeout(() => {									 
-								_this.$api.update_menu({
-									menu_id:_this.id,
-									menu_name:_this.cname,
-									menu_address:_this.cyd,
-									menu_weight:_this.newcgg,
-									production_time:_this.input,
-									quality_time:_this.newcbz,
-									menu_money:_this.cprice,
-									menu_images_json:_this.lbtimg,
-									monitor_image:_this.jyjcimg,
-									sample_name:_this.ypname,
-									monitoring_time:_this.inputjc,
-									test_location:_this.jcdd,
-									certificate_image:_this.spzsimg,
-								}).then((res) =>{
-									uni.hideLoading();
-									uni.showToast({
-										title: '修改成功',
-									});	
-									uni.navigateTo({
-										url: 'Product-list',
-										success: res => {},
-										fail: () => {},
-										complete: () => {}
-									});
-								});
-								// },3500);
-								
-							} else if (res.cancel) {
-								console.log('用户点击取消');
-								_this.queding = false
-								_this.lbtimg=[];
-								_this.jyjcimg=[];
-								_this.spzsimg=[];
-								
-							}
+						// if(this.cname == '' || this.cyd == '' || this.cgg == '' || this.input == '' || this.cbz == '' ||  this.cprice == ''){
+						// 	uni.showToast({
+						// 		title:'请将信息输入完整',
+						// 		icon:'none'
+						// 	})
+						// }
+						// else if(this.$refs.lbtload.lists.length == 0 ){
+						if(this.$refs.lbtload.lists.length == 0 ){
+							uni.showToast({
+								title:'请添加轮播图',
+								icon:'none'
+							})					
 						}
+						else if(this.input.slice(0,4) == this.year && this.input.slice(5,7)>this.month){
+								uni.showToast({
+									title:'生产日期有误',
+									icon:'none'
+								})				
+						}
+						else if(this.input.slice(0,4) == this.year && this.input.slice(5,7)>this.month && this.input.slice(8,10)>this.day){
+							uni.showToast({
+								title:'生产日期有误',
+								icon:'none'
+							})					
+						}
+						else if(this.inputjc && this.inputjc.slice(0,4) == this.year && this.inputjc.slice(5,7)>this.month){
+								uni.showToast({
+									title:'检测日期有误',
+									icon:'none'
+								})				
+						}
+						else if(this.inputjc && this.inputjc.slice(0,4) == this.year && this.inputjc.slice(5,7)>this.month && this.inputjc.slice(8,10)>this.day){
+							uni.showToast({
+								title:'检测日期有误',
+								icon:'none'
+							})					
+						}
+						else if(this.$refs.jyjcload.lists.length == 0 && this.ypname ||  this.$refs.jyjcload.lists.length == 0 && this.jcdd || this.$refs.jyjcload.lists.length == 0 &&  this.inputjc !='请选择检疫检测日期'){
+							console.log("this.$refs.jyjcload.lists.length",this.$refs.jyjcload.lists.length)
+							console.log("noimg");
+							uni.showToast({
+								title:'请完善检测检疫信息',
+								icon:'none'
+							})					
+						}
+						else if(!this.ypname && this.$refs.jyjcload.lists.length != 0  ||  !this.ypname && this.jcdd || !this.ypname && this.inputjc !='请选择检疫检测日期'){
+							console.log("noname");
+							uni.showToast({
+								title:'请完善检测检疫信息',
+								icon:'none'
+							})					
+						}
+						else if(!this.jcdd && this.$refs.jyjcload.lists.length != 0  ||  !this.jcdd && this.ypname || !this.jcdd && this.inputjc !='请选择检疫检测日期'){
+							console.log("nodd");
+							uni.showToast({
+								title:'请完善检测检疫信息',
+								icon:'none'
+							})					
+						}
+						else if(this.inputjc =='请选择检疫检测日期' && this.$refs.jyjcload.lists.length != 0  || this.inputjc =='请选择检疫检测日期' && this.inputjc =='请选择检疫检测日期' && this.jcdd){
+							console.log("notime");
+							uni.showToast({
+								title:'请完善检测检疫信息',
+								icon:'none'
+							})					
+						}			
+						// else if (re.test(this.cname)){
+						// 	uni.showToast({
+						// 		title:'商品名称输入有误',
+						// 		icon:'none' 
+						// 	})
+						// }
+						// else if(this.gg.length == 0 ){
+						// 	uni.showToast({
+						// 		title:'请选择商品日期的规格',
+						// 		icon:'none'
+						// 	})					
+						// }
+						else if (this.ypname && re.test(this.ypname)){
+							uni.showToast({
+								title:'正宗名称输入有误',
+								icon:'none'
+							})
+							
+						}
+						else{
+							
+							
+							
+							// }, 3000) //  3秒后执行代码
+							
+							
+							uni.showModal({
+								title: '提示',
+								content: '确定修改商品无误',
+								confirmColor: '#0ABB9A',
+								success:async function(res) {
+									_this.queding=true;
+									if (res.confirm) {
+										uni.showLoading({
+											title:"正在上传..."
+										});
+										
+										
+										let lbtList=[];
+										let lbtref=[];
+										let aa=false;
+										for(let i=0;i<_this.$refs.lbtload.lists.length;i++){
+											if(!_this.$refs.lbtload.lists[i].file){
+												lbtref.push(_this.$refs.lbtload.lists[i].url)
+											}else{
+												lbtList.push(_this.$refs.lbtload.lists[i])
+											}
+										}
+										console.log("获取的轮播图图片",lbtref);
+										console.log("要上传的轮播图图片",lbtList);
+										if(lbtList.length != 0){
+										let newlbtList = []; //定义一个新的轮播图数组newlbtList
+										for(let a=0;a <lbtList.length;a++){
+											newlbtList.push(lbtList[a].url) //循环出轮播图里面的blob图片地址，并插入newlbtList数组里					
+										}
+										console.log("去转换的轮播图",newlbtList);
+										for(let k= 0;k <newlbtList.length;k++){ //循环newlbtList数组并请求接口upFile上传图片接口转换图片地址
+													console.log("转换的轮播图",newlbtList[k]);
+												await _this.$api.upFile(newlbtList[k]).then((res)=>{									
+													let lbt_list = JSON.parse(res[1].data) //成功返回的图片地址转化成json放入lbt_list里	
+													_this.lbtlink.push(lbt_list.data.link) //转换好json的图片地址放入lbtimg数组里
+												})
+												if(_this.lbtlink.length == newlbtList.length){
+													break;
+												}
+											}
+										}
+										let imgb=[];
+										console.log("要上传的轮播图图片解析后",_this.lbtlink);
+										console.log("获取的轮播图片的长度",lbtref.length)
+													
+													
+													
+													
+													
+													
+													
+													
+											
+										//检疫检测图	
+										let jyjcList=[];
+										let jyjcref=[];
+										for(let e=0;e<_this.$refs.jyjcload.lists.length;e++){
+											if(!_this.$refs.jyjcload.lists[e].file){
+												jyjcref.push(_this.$refs.jyjcload.lists[e].url)
+											}else{
+												jyjcList.push(_this.$refs.jyjcload.lists[e])
+											}
+										}
+										console.log("获取的检疫检测图片",jyjcref);
+										console.log("要上传的检疫检测图片",jyjcList);
+										if(jyjcList){
+										let newjyjcList = [];
+										for(let r=0;r <jyjcList.length;r++){
+														
+												newjyjcList.push(jyjcList[r].url) 	
+										}
+														
+										for(let t=0;t<newjyjcList.length;t++){ 
+												await _this.$api.upFile(newjyjcList[t]).then((res)=>{									
+													let jyjc_list = JSON.parse(res[1].data) 
+													_this.jyjclink.push(jyjc_list.data.link) 
+												})
+												if(_this.jyjclink.length == newjyjcList.length){
+													break;
+												}
+											}
+										}
+										let imgc=[];
+										console.log("要上传的检疫检测图片解析后",_this.jyjclink);
+										console.log("获取检疫检测图片的长度",jyjcref.length)
+																
+																
+												
+												
+												
+												
+												
+												
+												
+										//商品证书图	
+										let spzsList=[];
+										let spzsref=[];
+										for(let i=0;i<_this.$refs.spzsload.lists.length;i++){
+											if(!_this.$refs.spzsload.lists[i].file){
+												spzsref.push(_this.$refs.spzsload.lists[i].url)
+											}else{
+												spzsList.push(_this.$refs.spzsload.lists[i])
+											}
+										}
+										console.log("获取的图片",spzsref);
+										console.log("要上传的图片",spzsList);
+										if(spzsList){
+										let newspzsList = [];
+										for(let a=0;a <spzsList.length;a++){
+												newspzsList.push(spzsList[a].url) 			
+										}
+														
+										for(let k= 0;k <newspzsList.length;k++){ 
+												await _this.$api.upFile(newspzsList[k]).then((res)=>{									
+													let spzs_list = JSON.parse(res[1].data) 
+													_this.spzslink.push(spzs_list.data.link) 
+												})
+												if(_this.spzslink.length == newspzsList.length){
+													break;
+												}
+											}
+										}
+										let imgd=[];
+										console.log("要上传的图片解析后",_this.spzslink);
+										console.log("获取图片的长度",spzsref.length)				
+													
+										// setTimeout(() => {
+										//轮播
+										console.log("要上传的轮播图片的长度",_this.lbtlink.length);
+										for(let b=0;b<lbtref.length;b++){
+												_this.lbtimg.push(lbtref[b])
+											if(_this.lbtimg.length ==lbtref.length ){
+												break;
+											}
+										}		
+										for(let c=0;c<_this.lbtlink.length;c++){
+											imgb.push(_this.lbtlink[c]) 
+											if(imgb.length ==_this.lbtlink.length ){
+												break;
+											}
+										}
+										console.log("_this.lbtimg",_this.lbtimg);
+										console.log("_this.lbtimg,lenght",_this.lbtimg.length);
+										
+										_this.lbtimg=_this.lbtimg.concat(imgb);
+										console.log("合并后的轮播图图片",_this.lbtimg);
+										
+										
+										//检疫检测
+										
+										console.log("要上传检疫检测图片的长度",_this.jyjclink.length);
+										for(let u=0;u<jyjcref.length;u++){
+												_this.jyjcimg.push(jyjcref[u])
+											if(_this.jyjcimg.length ==jyjcref.length ){
+												break;
+											}
+										}		
+											console.log("imgb,lenght",imgb.length);
+										if(_this.jyjclink !=''){
+											for(let z=0;z<_this.jyjclink.length;z++){
+												imgc.push(_this.jyjclink[z]) 
+												if(imgc.length ==_this.jyjclink.length ){
+													break;
+												}
+											}
+											_this.jyjcimg=_this.jyjcimg.concat(imgc);
+										}
+										
+										console.log("_this.jyjcimg",_this.jyjcimg);
+										console.log("_this.jyjcimg,lenght",_this.jyjcimg.length);
+										
+										
+										console.log("合并后的检疫检测图片",_this.jyjcimg);
+										
+										
+										
+										
+										//证书
+										console.log("要上传图片的长度",_this.spzslink.length);
+										for(let b=0;b<spzsref.length;b++){
+												_this.spzsimg.push(spzsref[b])
+											if(_this.spzsimg.length ==spzsref.length ){
+												break;
+											}
+										}		
+										for(let c=0;c<_this.spzslink.length;c++){
+											imgd.push(_this.spzslink[c]) 
+											if(imgd.length ==_this.spzslink.length ){
+												break;
+											}
+										}
+										_this.spzsimg=_this.spzsimg.concat(imgd);
+										console.log("合并后的证书图片",_this.spzsimg);
+										
+										
+										
+										//请求修改商品接口
+										console.log("aaa证书aaa",_this.jyjcimg)
+										console.log("aaa检疫aaa",_this.spzsimg)
+										// _this.newcgg=_this.cgg+_this.gg; //数量加规格
+										// _this.newcbz=_this.cbz+_this.bz; 
+										// setTimeout(() => {									 
+										_this.$api.update_menu({
+											menu_id:_this.id,
+											menu_name:_this.form.cname,
+											menu_address:_this.form.cyd,
+											menu_weight:_this.form.newcgg,
+											production_time:_this.input,
+											quality_time:_this.form.newcbz,
+											menu_money:_this.form.cprice,
+											menu_images_json:_this.lbtimg,
+											monitor_image:_this.jyjcimg,
+											sample_name:_this.ypname,
+											monitoring_time:_this.inputjc,
+											test_location:_this.jcdd,
+											certificate_image:_this.spzsimg,
+										}).then((res) =>{
+											uni.hideLoading();
+											uni.showToast({
+												title: '修改成功',
+											});	
+											uni.navigateTo({
+												url: 'Product-list',
+												success: res => {},
+												fail: () => {},
+												complete: () => {}
+											});
+										});
+										// },3500);
+										
+									} else if (res.cancel) {
+										console.log('用户点击取消');
+										_this.queding = false
+										_this.lbtimg=[];
+										_this.jyjcimg=[];
+										_this.spzsimg=[];
+										
+									}
+								}
+							});
+						}
+						//END TRUE VALID
+					} else {
+						//START FALID VALID
+						console.log('验证失败');
+						console.log(valid)
+						return;
+					}
 					});
-				}
 				},
 				btback() {
 						// console.log("aaaa")

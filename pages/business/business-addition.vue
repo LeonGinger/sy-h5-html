@@ -10,9 +10,9 @@
 		<view class="whitebox">
 			<view class="utitlebox">
 				<view class="utitleblock"></view>
-				<text class="utitle">轮播图</text>
-				<text class="uxtitle">（最多上传6张图片）</text>
+				<text class="utitle">公司场景图</text>
 				<text class="uxtitle" style="color: red;">*必填*</text>
+				<text class="uxtitle">（上限6张图片）</text>
 			</view>
 
 			<view class="lbt">
@@ -212,6 +212,9 @@
 					_this.model = res.model
 				}
 			})
+			// 必须要在onReady生命周期，因为onLoad生命周期组件可能尚未创建完毕
+			this.$refs.newBusinessform.setRules(this.newBusinessform);
+
 		},
 		onPageScroll(e) {
 			this.scrollTop = e.scrollTop;
@@ -715,7 +718,7 @@
 														
 														if (res.confirm) {
 															wx.reLaunch({
-																url:'../my/my'
+																url:'../index/index'
 															})	
 														}
 													},
@@ -765,7 +768,7 @@
 														
 														if (res.confirm) {
 															wx.reLaunch({
-																url:'../my/my'
+																url:'../index/index'
 															})	
 														}
 													}
@@ -796,7 +799,7 @@
 									
 									if (res.confirm) {
 										wx.reLaunch({
-											url:'../my/my'
+											url:'../index/index'
 										})	
 									}
 								}
@@ -834,7 +837,7 @@
 											
 											if (res.confirm) {
 												wx.reLaunch({
-													url:'../my/my'
+													url:'../index/index'
 												})	
 											}
 										}

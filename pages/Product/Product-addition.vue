@@ -25,31 +25,36 @@
 				<view class="utitleblock"></view>
 				<text class="utitle">填写商品信息</text>
 			</view>
-			<u-form  style="margin-left: 20upx;margin-top: 15upx;">
-				<u-form-item label="商品名称:">
-					<u-input placeholder="请输入商品名称" v-model="cname" maxlength='14' />
+			<u-form :model="form" ref="forminfo"  style="margin-left: 20upx;margin-top: 15upx;" :error-type="errorType">
+				<u-form-item label="商品名称:" prop="cname" required>
+					<u-input placeholder="请输入商品名称" v-model="form.cname" maxlength='14'  />
 				</u-form-item>
-				<u-form-item label="生源产地:">
-					<u-input placeholder="请输入生源产地" v-model="cyd" maxlength='14' />
+				<u-form-item label="生源产地:" prop="cyd" required>
+					<u-input placeholder="请输入生源产地" v-model="form.cyd" maxlength='14' />
 				</u-form-item>
-				<u-form-item label="商品规格:">
-					<u-input placeholder="请输入商品规格" v-model="cgg" type='number' maxlength='5'/>
-					<span style="position: absolute; margin-left: 85upx;margin-top: -1.5upx;" v-if="cgg">{{gg}}</span>
-					<view class="gg" @click="ggshow = true">规格</view>					
-					<u-select v-model="ggshow" :list="list"  @confirm="confirmgg"></u-select>
+				<u-form-item label="商品规格:" prop="newcgg" required>
+					<u-input placeholder="请输入商品规格" v-model="form.newcgg"  maxlength='5'/>
+					<!-- <u-input placeholder="请输入商品规格" v-model="form.cgg"  maxlength='5'/> -->
+					<!-- <span style="position: absolute; margin-left: 85upx;margin-top: -1.5upx;" v-if="cgg">{{gg}}</span> -->
+					<!-- <view class="gg" @click="ggshow = true">规格</view>					 -->
+					<!-- <u-select v-model="ggshow" :list="list"  @confirm="confirmgg"></u-select> -->
 				</u-form-item>
-				<u-form-item label="生产日期:">
+				<u-form-item label="生产日期:" prop="input" required>
 					<view @click="show = true" :style="input=='' ? 'color:#C0C4CC':'color:black'" class="scrq" style="width: 420upx;">{{ input ? input : '请选择生产日期' }}</view>
+					<!-- <u-icon name="close-circle-fill" color="#c1c1cb" size="30"  @click="qxinputjc" v-if="inputjc!='请选择生产日期'"></u-icon> -->
+					<u-icon style="margin-top: 10rpx;margin-left: -8rpx;" size="20" name="arrow-down-fill"></u-icon>
+					
 				</u-form-item>
 				<u-picker mode="time" v-model="show" :params="params" @confirm="confirm"></u-picker>
-				<u-form-item label="保质日期:">
-					<u-input placeholder="请输入商品保质期" v-model="cbz" maxlength='3'  type="number"/>
+				<u-form-item label="保质期限:" prop="newcbz" required>
+					<u-input placeholder="请输入商品保质期" v-model="form.newcbz" maxlength='3'/>
+<!-- 					<u-input placeholder="请输入商品保质期" v-model="cbz" maxlength='3'  type="number"/>
 					<span style="position: absolute; margin-left: 85upx;margin-top: -1.5upx;" v-if="cbz">{{bz}}</span>
 					<view class="gg" @click="bzshow = true">期限</view>	
-					<u-select v-model="bzshow" :list="lists"  @confirm="confirmbz"></u-select>
+					<u-select v-model="bzshow" :list="lists"  @confirm="confirmbz"></u-select> -->
 				</u-form-item>
-				<u-form-item label="商品售价:">
-					<u-input placeholder="请输入商品的价格(元)" v-model="cprice"  type="number" maxlength='5'/>
+				<u-form-item label="商品售价:" prop="cprice" required>
+					<u-input placeholder="请输入商品的价格(元)" v-model="form.cprice"  type="number" maxlength='5'/>
 					
 				</u-form-item>
 			</u-form>
@@ -82,6 +87,7 @@
 						<u-form-item label="检测日期:">
 							<view @click="showjc = true" :style="inputjc=='' ? 'color:#C0C4CC':'color:black'" class="scrq" style="width: 420upx;">{{ inputjc ? inputjc : '请选择检疫检测日期' }}</view>
 							<u-icon name="close-circle-fill" color="#c1c1cb" size="30"  @click="qxinputjc" v-if="inputjc"></u-icon>
+							<u-icon style="margin-top: 10rpx;margin-left: -8rpx;" size="20" name="arrow-down-fill" v-if="!inputjc"></u-icon>
 						</u-form-item>
 						<u-picker mode="time" v-model="showjc" :params="paramsjc" @confirm="confirmjc"></u-picker>
 						<u-form-item label="检验地点:">
@@ -131,9 +137,76 @@
 	export default {
 		data() {
 			return {
+				// message：默认为输入框下方用文字进行提示
+				// none：只要包含此值，将不会进行任何提示
+				// border-bottom：配置作用域底部的下划线显示为红色
+				// border：配置输入框的边框为红色进行提示 -- 如果有配置显示Input组件显示边框的话
+				// toast：以"toast"提示的方式弹出错误信息，每次只弹出最前面的那个表单域的错误信息(1.3.5新增)
+				errorType:['toast','border-bottom'],
+				forminfo_rules:{
+					cname:[
+							{required: true,message: '请输入商品名称',trigger: 'blur,change'},
+							// 可以单个或者同时写两个触发验证方式trigger: 'blur,change'
+							// {
+							// 	// 自定义验证函数，见上说明
+							// 	validator: (rule, value, callback) => {
+							// 		// 上面有说，返回true表示校验通过，返回false表示不通过
+							// 		// this.$u.test.mobile()就是返回true或者false的
+							// 		return this.$u.test.mobile(value);
+							// 	},
+							// 	message: '请输入姓名',
+							// 	// 触发器可以同时用blur和change
+							// 	trigger: ['change','blur'],
+							// }
+					],
+					cyd:[
+							{required: true,message: '请输入生源产地',trigger: 'blur,change'},
+					],
+					newcgg:[
+							{required: true,message: '请输入商品规格',trigger: 'blur,change'},
+					],
+					newcbz:[
+							{required: true,message: '请输入商品保质期',trigger: 'blur,change'},
+					],
+					cprice:[
+							{required: true,message: '请输入商品的价格(元)',trigger: 'blur,change'},
+					],
+					input:[
+						// {required: true,message: '请选择生产日期',trigger: 'blur,change'},
+						{
+							// 自定义验证函数，见上说明
+							validator: (rule, value, callback) => {
+								if(this.input){
+									return true
+								}else{
+									return false
+								}
+								// 上面有说，返回true表示校验通过，返回false表示不通过
+								// this.$u.test.mobile()就是返回true或者false的
+								// return this.$u.test.mobile(value);
+							},
+							message: '请选择生产日期',
+							// 触发器可以同时用blur和change
+							trigger: ['change','blur'],
+						}
+					],
+				},
 				model:'',
 				action: '',//后端接口地址
 				scrollTop: 0,
+				// 新表单
+				form:{
+					cname: '',
+					cyd: '',
+					cgg: '',
+					input: '',
+					inputjc: '',
+					cbz: '',
+					cprice: '',
+					ypname: '',
+					jcdd: '',
+					newcgg:'',
+				},
 				// 表单
 				cname: '',
 				cyd: '',
@@ -233,6 +306,11 @@
 				],
 			}
 			
+		},
+		onReady() {
+			// 必须要在onReady生命周期，因为onLoad生命周期组件可能尚未创建完毕
+			this.$refs.forminfo.setRules(this.forminfo_rules);
+		
 		},
 		onLoad() {
 
@@ -334,217 +412,235 @@
 				this.year = time.getFullYear();
 				this.month = Number(time.getMonth()) + 1;
 				this.day = time.getDate();
-				if(this.cname == '' || this.cyd == '' || this.cgg == '' || this.input == ''  || this.cbz == '' ||  this.cprice == ''){
-					uni.showToast({
-						title:'请将信息输入完整',
-						icon:'none'
-					})
-				}
-				else if(this.$refs.lbtload.lists.length == 0 ){
-					uni.showToast({
-						title:'请添加轮播图',
-						icon:'none'
-					})					
-				}
-				else if(this.input.slice(0,4) == this.year && this.input.slice(5,7)>this.month){
+				this.$refs.forminfo.validate(valid => {
+					if (valid) {
+					//START TRUE VALID
+					
+					
+					
+					// if(this.cname == '' || this.cyd == '' || this.cgg == '' || this.input == ''  || this.cbz == '' ||  this.cprice == ''){
+					// 	uni.showToast({
+					// 		title:'请将信息输入完整',
+					// 		icon:'none'
+					// 	})
+					// }
+					// else if(this.$refs.lbtload.lists.length == 0 ){
+					if(this.$refs.lbtload.lists.length == 0 ){
+						uni.showToast({
+							title:'请添加轮播图',
+							icon:'none'
+						})					
+					}
+					else if(this.input.slice(0,4) == this.year && this.input.slice(5,7)>this.month){
+							uni.showToast({
+								title:'生产日期有误',
+								icon:'none'
+							})				
+					}
+					else if(this.input.slice(0,4) == this.year && this.input.slice(5,7)>this.month && this.input.slice(8,10)>this.day){
 						uni.showToast({
 							title:'生产日期有误',
 							icon:'none'
-						})				
-				}
-				else if(this.input.slice(0,4) == this.year && this.input.slice(5,7)>this.month && this.input.slice(8,10)>this.day){
-					uni.showToast({
-						title:'生产日期有误',
-						icon:'none'
-					})					
-				}
-				else if(this.inputjc && this.inputjc.slice(0,4) == this.year && this.inputjc.slice(5,7)>this.month){
+						})					
+					}
+					else if(this.inputjc && this.inputjc.slice(0,4) == this.year && this.inputjc.slice(5,7)>this.month){
+							uni.showToast({
+								title:'检测日期有误',
+								icon:'none'
+							})				
+					}
+					else if(this.inputjc && this.inputjc.slice(0,4) == this.year && this.inputjc.slice(5,7)>this.month && this.inputjc.slice(8,10)>this.day){
 						uni.showToast({
 							title:'检测日期有误',
 							icon:'none'
-						})				
-				}
-				else if(this.inputjc && this.inputjc.slice(0,4) == this.year && this.inputjc.slice(5,7)>this.month && this.inputjc.slice(8,10)>this.day){
-					uni.showToast({
-						title:'检测日期有误',
-						icon:'none'
-					})					
-				}
-				else if(this.$refs.jyjcload.lists.length == 0 && this.ypname ||  this.$refs.jyjcload.lists.length == 0 && this.jcdd || this.$refs.jyjcload.lists.length == 0 &&  this.inputjc){
-					console.log("this.$refs.jyjcload.lists.length",this.$refs.jyjcload.lists.length)
-					console.log("noimg");
-					uni.showToast({
-						title:'请完善检测检疫信息',
-						icon:'none'
-					})					
-				}
-				else if(!this.ypname && this.$refs.jyjcload.lists.length != 0  ||  !this.ypname && this.jcdd || !this.ypname && this.inputjc){
-					console.log("noname");
-					uni.showToast({
-						title:'请完善检测检疫信息',
-						icon:'none'
-					})					
-				}
-				else if(!this.jcdd && this.$refs.jyjcload.lists.length != 0  ||  !this.jcdd && this.ypname || !this.jcdd && this.inputjc){
-					console.log("nodd");
-					uni.showToast({
-						title:'请完善检测检疫信息',
-						icon:'none'
-					})					
-				}
-				else if(!this.inputjc && this.$refs.jyjcload.lists.length != 0  ||  !this.inputjc && this.ypname || !this.inputjc && this.jcdd){
-					console.log("notime");
-					uni.showToast({
-						title:'请完善检测检疫信息',
-						icon:'none'
-					})					
-				}
-				
-				else if(this.bz.length == 0 ){
-					uni.showToast({
-						title:'请选择保质日期的期限',
-						icon:'none'
-					})					
-				}
-				else if(this.gg.length == 0 ){
-					uni.showToast({
-						title:'请选择商品日期的规格',
-						icon:'none'
-					})					
-				}
-				else if (this.ypname && re.test(this.ypname)){
-					uni.showToast({
-						title:'正宗名称输入有误',
-						icon:'none'
-					})
+						})					
+					}
+					else if(this.$refs.jyjcload.lists.length == 0 && this.ypname ||  this.$refs.jyjcload.lists.length == 0 && this.jcdd || this.$refs.jyjcload.lists.length == 0 &&  this.inputjc){
+						console.log("this.$refs.jyjcload.lists.length",this.$refs.jyjcload.lists.length)
+						console.log("noimg");
+						uni.showToast({
+							title:'请完善检测检疫信息',
+							icon:'none'
+						})					
+					}
+					else if(!this.ypname && this.$refs.jyjcload.lists.length != 0  ||  !this.ypname && this.jcdd || !this.ypname && this.inputjc){
+						console.log("noname");
+						uni.showToast({
+							title:'请完善检测检疫信息',
+							icon:'none'
+						})					
+					}
+					else if(!this.jcdd && this.$refs.jyjcload.lists.length != 0  ||  !this.jcdd && this.ypname || !this.jcdd && this.inputjc){
+						console.log("nodd");
+						uni.showToast({
+							title:'请完善检测检疫信息',
+							icon:'none'
+						})					
+					}
+					else if(!this.inputjc && this.$refs.jyjcload.lists.length != 0  ||  !this.inputjc && this.ypname || !this.inputjc && this.jcdd){
+						console.log("notime");
+						uni.showToast({
+							title:'请完善检测检疫信息',
+							icon:'none'
+						})					
+					}
 					
-				}
-				
-				else{		
-					
-					let _this = this
-					//轮播图
-					let lbtList=[]
-						lbtList = _this.$refs.lbtload.lists.filter(val => {  //把轮播图放入lbtList数组里
-						return val;
-					})
-					//检疫证书
-					let jyjcList=[]
-						jyjcList = _this.$refs.jyjcload.lists.filter(val => {  //把检疫检测图放入jyjcList数组里
-						return val;
-					})
-					//商品证书
-					let spzsList=[]
-						spzsList = _this.$refs.spzsload.lists.filter(val => {  //把商品证书图放入jyjcList数组里
-						return val;
-					})
-					
-					
-					uni.showModal({
-						title: '提示',
-						content: '确定上架商品无误',
-						confirmColor: '#0ABB9A',
-						success:async function(res) {
-							if (res.confirm) {	
-								// let _this = this
-								_this.queding=true;
-								
-								uni.showLoading({
-									title:"正在上传..."
-								});
-								
-								let newlbtList = []; //定义一个新的轮播图数组newlbtList
-								for(let i = 0;i <lbtList.length;i++){
-									newlbtList.push(lbtList[i].url) //循环出轮播图里面的blob图片地址，并插入newlbtList数组里
-								}
-								for(let k= 0;k <newlbtList.length;k++){ //循环newlbtList数组并请求接口upFile上传图片接口转换图片地址
-									 await _this.$api.upFile(newlbtList[k]).then((res)=>{									
-										let lbt_list = JSON.parse(res[1].data) //成功返回的图片地址转化成json放入lbt_list里
-										_this.lbtimg.push(lbt_list.data.link) //转换好json的图片地址放入lbtimg数组里
-									})
-								}
-								
-								let newjyjcList = []; //定义一个新的轮播图数组newlbtList
-								for(let i = 0;i <jyjcList.length;i++){
-									newjyjcList.push(jyjcList[i].url) //循环出轮播图里面的blob图片地址，并插入newjyjcList数组里
-								}
-								for(let k= 0;k <newjyjcList.length;k++){ //循环newjyjcList数组并请求接口upFile上传图片接口转换图片地址
-									 await _this.$api.upFile(newjyjcList[k]).then((res)=>{									
-										let jyjc_list = JSON.parse(res[1].data) //成功返回的图片地址转化成json放入lbt_list里
-										_this.jyjcimg.push(jyjc_list.data.link) //转换好json的图片地址放入jyjcimg数组里
-									})
-								}
-								
-								
-								let newspzsList = []; //定义一个新的轮播图数组newspzsList
-								for(let i = 0;i <spzsList.length;i++){
-									newspzsList.push(spzsList[i].url) //循环出轮播图里面的blob图片地址，并插入newspzsList数组里
-								}
-								for(let k= 0;k <newspzsList.length;k++){ //循环newlbtList数组并请求接口upFile上传图片接口转换图片地址
-									await  _this.$api.upFile(newspzsList[k]).then((res)=>{									
-										let spzs_list = JSON.parse(res[1].data) //成功返回的图片地址转化成json放入spzs_list里
-										_this.spzsimg.push(spzs_list.data.link) //转换好json的图片地址放入spzsimg数组里
-										console.log("_this.spzsimg",_this.spzsimg);
-									})
-								}
-								
-								//请求添加商品接口
-								_this.newcgg=_this.cgg+_this.gg; //数量加规格
-								_this.newcbz=_this.cbz+_this.bz; 
-								_this.$api.create_menu({
-									menu_name:_this.cname,
-									menu_address:_this.cyd,
-									menu_weight:_this.newcgg,
-									production_time:_this.input,
-									quality_time:_this.newcbz,
-									menu_money:_this.cprice,
-									menu_images_json:_this.lbtimg,
-									monitor_image:_this.jyjcimg,
-									sample_name:_this.ypname,
-									monitoring_time:_this.inputjc,
-									test_location:_this.jcdd,
-									certificate_image:_this.spzsimg,
-								}).then((res) =>{
-									uni.hideLoading();
-									uni.showToast({
-										title: '添加成功',
-									});	
-									uni.navigateTo({
-										url: 'Product-list',
-										success: res => {},
-										fail: () => {},
-										complete: () => {}
-									});
-								}).catch((error)=>{
-									uni.hideLoading();
-									uni.showModal({
-										title: "提交失败",
-										content: error.data.message,
-										showCancel: false,
-										confirmColor: '#0ABB9A',
-										success:function(res){
-											uni.navigateTo({
-												url: 'Product-list',
-												success: res => {},
-												fail: () => {},
-												complete: () => {}
-											});
-											
-										}
-									})
-									//重置本页面
+					// else if(this.bz.length == 0 ){
+					// 	uni.showToast({
+					// 		title:'请选择保质期限的期限',
+					// 		icon:'none'
+					// 	})					
+					// }
+					// else if(this.gg.length == 0 ){
+					// 	uni.showToast({
+					// 		title:'请选择商品日期的规格',
+					// 		icon:'none'
+					// 	})					
+					// }
+					else if (this.ypname && re.test(this.ypname)){
+						uni.showToast({
+							title:'正宗名称输入有误',
+							icon:'none'
+						})
+						
+					}
+					//end twice check
+					else{		
+						
+						let _this = this
+						//轮播图
+						let lbtList=[]
+							lbtList = _this.$refs.lbtload.lists.filter(val => {  //把轮播图放入lbtList数组里
+							return val;
+						})
+						//检疫证书
+						let jyjcList=[]
+							jyjcList = _this.$refs.jyjcload.lists.filter(val => {  //把检疫检测图放入jyjcList数组里
+							return val;
+						})
+						//商品证书
+						let spzsList=[]
+							spzsList = _this.$refs.spzsload.lists.filter(val => {  //把商品证书图放入jyjcList数组里
+							return val;
+						})
+						
+						
+						uni.showModal({
+							title: '提示',
+							content: '确定上架商品无误',
+							confirmColor: '#0ABB9A',
+							success:async function(res) {
+								if (res.confirm) {	
+									// let _this = this
+									_this.queding=true;
 									
-								})
-								
-							} else if (res.cancel) {
-								console.log('用户点击取消');
-								_this.lbtimg=[];
-								_this.jyjcimg=[];
-								_this.spzsimg=[];
+									uni.showLoading({
+										title:"正在上传..."
+									});
+									
+									let newlbtList = []; //定义一个新的轮播图数组newlbtList
+									for(let i = 0;i <lbtList.length;i++){
+										newlbtList.push(lbtList[i].url) //循环出轮播图里面的blob图片地址，并插入newlbtList数组里
+									}
+									for(let k= 0;k <newlbtList.length;k++){ //循环newlbtList数组并请求接口upFile上传图片接口转换图片地址
+										 await _this.$api.upFile(newlbtList[k]).then((res)=>{									
+											let lbt_list = JSON.parse(res[1].data) //成功返回的图片地址转化成json放入lbt_list里
+											_this.lbtimg.push(lbt_list.data.link) //转换好json的图片地址放入lbtimg数组里
+										})
+									}
+									
+									let newjyjcList = []; //定义一个新的轮播图数组newlbtList
+									for(let i = 0;i <jyjcList.length;i++){
+										newjyjcList.push(jyjcList[i].url) //循环出轮播图里面的blob图片地址，并插入newjyjcList数组里
+									}
+									for(let k= 0;k <newjyjcList.length;k++){ //循环newjyjcList数组并请求接口upFile上传图片接口转换图片地址
+										 await _this.$api.upFile(newjyjcList[k]).then((res)=>{									
+											let jyjc_list = JSON.parse(res[1].data) //成功返回的图片地址转化成json放入lbt_list里
+											_this.jyjcimg.push(jyjc_list.data.link) //转换好json的图片地址放入jyjcimg数组里
+										})
+									}
+									
+									
+									let newspzsList = []; //定义一个新的轮播图数组newspzsList
+									for(let i = 0;i <spzsList.length;i++){
+										newspzsList.push(spzsList[i].url) //循环出轮播图里面的blob图片地址，并插入newspzsList数组里
+									}
+									for(let k= 0;k <newspzsList.length;k++){ //循环newlbtList数组并请求接口upFile上传图片接口转换图片地址
+										await  _this.$api.upFile(newspzsList[k]).then((res)=>{									
+											let spzs_list = JSON.parse(res[1].data) //成功返回的图片地址转化成json放入spzs_list里
+											_this.spzsimg.push(spzs_list.data.link) //转换好json的图片地址放入spzsimg数组里
+											console.log("_this.spzsimg",_this.spzsimg);
+										})
+									}
+									
+									//请求添加商品接口
+									// _this.newcgg=_this.cgg+_this.gg; //数量加规格
+									// _this.newcbz=_this.cbz+_this.bz; 
+									_this.$api.create_menu({
+										menu_name:_this.form.cname,
+										menu_address:_this.form.cyd,
+										menu_weight:_this.form.newcgg,
+										production_time:_this.input,
+										quality_time:_this.form.newcbz,
+										menu_money:_this.form.cprice,
+										menu_images_json:_this.lbtimg,
+										monitor_image:_this.jyjcimg,
+										sample_name:_this.ypname,
+										monitoring_time:_this.inputjc,
+										test_location:_this.jcdd,
+										certificate_image:_this.spzsimg,
+									}).then((res) =>{
+										uni.hideLoading();
+										uni.showToast({
+											title: '添加成功',
+										});	
+										uni.navigateTo({
+											url: 'Product-list',
+											success: res => {},
+											fail: () => {},
+											complete: () => {}
+										});
+									}).catch((error)=>{
+										uni.hideLoading();
+										uni.showModal({
+											title: "提交失败",
+											content: error.data.message,
+											showCancel: false,
+											confirmColor: '#0ABB9A',
+											success:function(res){
+												uni.navigateTo({
+													url: 'Product-list',
+													success: res => {},
+													fail: () => {},
+													complete: () => {}
+												});
+												
+											}
+										})
+										//重置本页面
+										
+									})
+									
+								} else if (res.cancel) {
+									console.log('用户点击取消');
+									_this.lbtimg=[];
+									_this.jyjcimg=[];
+									_this.spzsimg=[];
+								}
 							}
-						}
-					});
-				}
+						});
+					}
+
+
+					//END TRUE VALID 
+					} else {
+						//START FALID VALID
+						// console.log(valid)
+						// console.log('验证失败');
+						return;
+					}
+				});
+
 				
 			},
 			// image(){

@@ -9,7 +9,7 @@
 		<!-- 轮播图 -->
 		<view class="whitebox">
 			<view class="lbt">			
-					<u-swiper :list="business_selectall.business_images"></u-swiper>
+					<u-swiper img-mode="" :list="business_selectall.business_images"></u-swiper>
 			</view>
 		</view>
 		<!-- 轮播图 -->
@@ -73,7 +73,7 @@
 				<scroll-view class="rzscrool" scroll-x="true" scroll-with-animation="true">
 					<span class="rzimg" v-for="(item,index) in business_selectall.appraisal_image" 
 					:key="index">
-					<image  mode="aspectFill" @click="previewImg(item)" :src="item"></image>
+					<image  mode="heightFix" @click="previewImg(item)" :src="item"></image>
 					</span>		
 				</scroll-view>
 			</view>
@@ -184,7 +184,14 @@
 							res.data.menuAll[i].menu_images_json=JSON.parse(res.data.menuAll[i].menu_images_json)
 						}
 						_this.my_menu=res.data.menuAll;
-						_this.my_menu_recommend=_this.my_menu[0].recommend
+						console.log(_this.my_menu)
+						
+						try{
+							_this.my_menu_recommend=_this.my_menu[0].recommend
+						}catch(e){
+							//biao cuo
+							_this.my_menu_recommend=0
+						}
 						_this.my_menu_length=_this.my_menu.length
 						console.log("商品",_this.my_menu);
 						if( _this.my_menu_recommend == 0 && _this.my_menu_length<=1){
@@ -196,6 +203,11 @@
 				_this.business_selectall.business_images = JSON.parse(_this.business_selectall.business_images)
 				//证书转数组
 				_this.business_selectall.appraisal_image = JSON.parse(_this.business_selectall.business_appraisal[0].appraisal_image)
+				//添加更多
+				// var tmp_imageshref = "https://sy.zsicp.com//static/images/none.png";
+				// if(_this.business_selectall.appraisal_image.length<2){
+				// 	_this.business_selectall.appraisal_image.push(tmp_imageshref)
+				// }
 				// console.log("_this.business_selectall.business_appraisal[0].appraisal_image",_this.business_selectall.business_appraisal[0].appraisal_image)
 				//商家风光图片和风光文字转数组
 				if(_this.business_selectall.business_image_injson == "[]" || _this.business_selectall.business_img[0].business_image_injson == '' || _this.business_selectall.business_img[0].business_img_contentjson == "[]" || _this.business_selectall.business_img[0].business_img_contentjson == ''){
@@ -366,7 +378,7 @@
 		box-shadow: 0 0 10upx #C0C4CC;
 	}
 	.rzimg image{
-		width: 210upx;
+		width: 260upx;
 		height: 300upx;
 		margin-right: 10upx;
 	}

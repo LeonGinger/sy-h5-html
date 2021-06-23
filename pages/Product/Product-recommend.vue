@@ -91,8 +91,11 @@
 				<scroll-view class="sjscrool" scroll-x="true" scroll-with-animation="true">
 					<span class="sjimg" v-for="(item,index) in sjimg" 
 					:key="index">
-					<image mode="aspectFill" @click="previewImg(item.image)" :src="item.image"></image>
+					<image mode="aspectFit" @click="previewImg(item.image)" :src="item.image"></image>
 					</span>		
+		<!-- 			<span class="sjimg">
+					<image mode="aspectFill" src="../../static/next.png"></image>
+					</span>	 -->
 				</scroll-view>
 			</view>
 		</view>
@@ -681,8 +684,8 @@
 		margin-left: 20upx;
 		}	
 	.sjimg image{
-		width: 450upx;
-		height: 350upx;;
+		/* width: 450upx; */
+		height: 308upx;
 		margin-right: 10upx;
 	}
 	.sjimg:last-child image{
