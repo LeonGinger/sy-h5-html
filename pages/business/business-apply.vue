@@ -209,21 +209,19 @@
 						icon:'none'
 					})
 				}
-				else if(this.regphonechanger){
-					if(!this.shuju.responsible_phonecode){
-							uni.hideLoading()
-							uni.showToast({
-								title:'请输入正确短信验证码',
-								icon:'none'
-							})
-					}
-					if(this.shuju.responsible_phonecode.length<6){
-							uni.hideLoading()
-							uni.showToast({
-								title:'请输入正确短信验证码',
-								icon:'none'
-							})
-					}
+				else if(this.regphonechanger && !this.shuju.responsible_phonecode){
+					uni.hideLoading()
+					uni.showToast({
+						title:'请输入正确短信验证码',
+						icon:'none'
+					})
+				}
+				else if(this.regphonechanger && this.shuju.responsible_phonecode.length<6){
+					uni.hideLoading()
+					uni.showToast({
+						title:'请输入正确短信验证码',
+						icon:'none'
+					})
 				}
 				else if(this.$refs.uUpload.lists.length == 0 ){
 					uni.hideLoading()

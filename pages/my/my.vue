@@ -458,8 +458,8 @@
 			sdsdk(){
 					let token = uni.getStorageSync('token'); //从缓存数据中获取token
 					//仅用于测试
-					// uni.setStorageSync('token',"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2Mi5nbmxlb24ueHl6IiwiaWF0IjoxNjI0NDMyNzMwLCJkYXRhIjp7InVzZXJpZCI6Mjl9LCJzY29wZXMiOiJyb2xlX3JlZnJlc2giLCJleHAiOjE2MjcwMjQ3MzB9.96ZtLhiqFAJwsh2j44HNN1DCzIteJCuW9OnaOy-ngFo");
-					// let token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2Mi5nbmxlb24ueHl6IiwiaWF0IjoxNjI0NDMyNzMwLCJkYXRhIjp7InVzZXJpZCI6Mjl9LCJzY29wZXMiOiJyb2xlX3JlZnJlc2giLCJleHAiOjE2MjcwMjQ3MzB9.96ZtLhiqFAJwsh2j44HNN1DCzIteJCuW9OnaOy-ngFo"
+					// uni.setStorageSync('token',");
+					// let token = "
 					// TEST END
 						let _this = this
 						var data ={

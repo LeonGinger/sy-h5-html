@@ -298,7 +298,8 @@ export default {
 			bigimgWidth:'',
 			cklt:false,
 			bgimg:'',
-			resImg:''
+			resImg:'',
+			bigimg:'',
 		};
 	},
 	watch: {
