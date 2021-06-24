@@ -7,10 +7,12 @@
 				    <view class="utitle">商家管理</view>
 				</view>
 			</view>
-			<text class="ts">(左滑列表可进行操作，点击列表浏览商家详情)</text>
-			<u-swipe-action :show="item.show" :index="index" v-for="(item, index) in list" :key="item.id" @click="click" @open="open"
-			 :options="options" class="listbox" :disabled="disabled">
-				<view class="item u-border-bottom" @click="xq">
+			<!-- <text class="ts">(左滑列表可进行操作，点击列表浏览商家详情)</text> -->
+			<!-- <u-swipe-action :show="item.show" :index="index" v-for="(item, index) in list" :key="item.id" @click="click" @open="open" -->
+		<!-- 	<u-swipe-action :show="item.show" :index="index" v-for="(item, index) in list" :key="item.id"
+			 :options="options" class="listbox" :disabled="disabled"> -->
+				<view v-for="(item, index) in list" class="listbox">
+				<view class="item u-border-bottom">
 					<image mode="aspectFill" :src="item.images" />
 					<!-- 此层wrap在此为必写的，否则可能会出现标题定位错误 -->
 					<view class="title-wrap">
@@ -19,9 +21,16 @@
 						<text class="dh">联系电话:{{item.responsible_phone}}</text>
 					</view>
 				</view>
+				<view class="item u-border-bottom" style="margin-left: 30px;">
+					<u-button hover-class="btnhover" class="custom-style" type="default" shape="circle" size="medium" @click="xq">查看信息</u-button>
+					<u-button hover-class="btnhover" class="custom-style" type="default" shape="circle" size="medium" @click="edit">修改信息</u-button>
+					<u-button hover-class="btnhover" class="custom-style1" type="default" shape="circle" size="medium" @click="click(index,1)">注 销</u-button>
+				</view>
+				
+				
 				<span class="rzfalse" v-if="verify_if == 2">(您上次修改的商家信息审核未通过，可再次修改提交审核)</span>
-			</u-swipe-action>
-
+			<!-- </u-swipe-action> -->
+				</view>
 
 		</view>
 		<view class="aa" style="padding-bottom: 150rpx;"></view>
@@ -50,18 +59,19 @@
 				business_id:'',
 				disabled:false,
 				show: false,
-				options: [{
-						text: '修改',
-						style: {
-							backgroundColor: '#5fd0bb'
-						}
-					},
-					{
-						text: '注销',
-						style: {
-							backgroundColor: '#dd524d'
-						}
-					}
+				options: [
+					// {
+					// 	text: '修改',
+					// 	style: {
+					// 		backgroundColor: '#5fd0bb'
+					// 	}
+					// },
+					// {
+					// 	text: '注销',
+					// 	style: {
+					// 		backgroundColor: '#dd524d'
+					// 	}
+					// }
 				],
 				ck:0
 			};
@@ -116,6 +126,29 @@
 			})
 		},
 		methods: {
+			edit(){
+				let _this=this;
+				if(this.ck == 0){
+					uni.showModal({
+						title:"提示",
+						content:"您的商家信息还未填写完整\n请您点击”确定“去完善商家信息",
+						confirmColor:'#0ABB9A',
+						showCancel:false,
+						success:(res) =>{
+							if(res.confirm){
+								uni.navigateTo({
+									url: '../business/business-addition?business_id='+_this.business_id
+								})
+								// console.log("点击确定")
+							}
+						}
+					})
+				}else{
+					uni.navigateTo({
+						url: '../business/business-addition?business_id='+_this.business_id
+					})
+				}
+			},
 			xq(){
 				let _this=this;
 				if(this.ck == 0){
@@ -195,6 +228,18 @@
 </script>
 
 <style>
+	.btnhover{
+		color: #0ABB9A;
+	}
+	.custom-style {
+		color: #606266;
+		width: 160rpx;
+		margin-right:10px;
+	}
+	.custom-style1 {
+		color: #606266;
+		width: 50rpx;
+	}
 	.rzfalse{
 		
 		color: red;

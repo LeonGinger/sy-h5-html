@@ -9,9 +9,11 @@
 				<text class="dtext">共<u-count-to :start-val="0" :end-val="my_menu.length" :duration="1500" :use-easing="false"></u-count-to>件商品
 				</text>
 			</view>
-			<text class="ts">{{my_menu.length==0 ? '(点击添加按钮可添加商品)':'(左滑列表可操作商品，点击可查看商品详情)'}}</text>
-			<u-swipe-action :show="item.show" :index="index" v-for="(item, index) in my_menu"  @click="click" @open="open"
-			 :options="options" class="listbox">
+			<!-- <text class="ts">{{my_menu.length==0 ? '(点击添加按钮可添加商品)':'(左滑列表可操作商品，点击可查看商品详情)'}}</text> -->
+			<text class="ts">{{my_menu.length==0 ? '(点击添加按钮可添加商品)':''}}</text>
+						<!-- <u-swipe-action :show="item.show" :index="index" v-for="(item, index) in my_menu"  @click="click" @open="open"
+			 :options="options" class="listbox"> -->
+			 <view :index="index" v-for="(item, index) in my_menu" class="listbox">
 				<view class="item u-border-bottom" :index="index" @click="ckxx(index)">
 					<image mode="aspectFill"  :src="item.menu_images_json" />
 					<!-- 此层wrap在此为必写的，否则可能会出现标题定位错误 -->
@@ -22,8 +24,13 @@
 						<text class="dz">{{item.menu_address}}</text>
 					</view>
 				</view>
-			</u-swipe-action>
-
+				<view class="item u-border-bottom" style="margin-left: 30px;">
+					<u-button hover-class="btnhover" class="custom-style" type="default" shape="circle" size="medium" @click="ckxx(index)">查看详情</u-button>
+					<u-button hover-class="btnhover" class="custom-style" type="default" shape="circle" size="medium" @click="click(index,0)">修改信息</u-button>
+					<u-button hover-class="btnhover" class="custom-style1" type="default" shape="circle" size="medium" @click="click(index,1)">删 除</u-button>
+				</view>
+			<!-- </u-swipe-action> -->
+			</view>
 
 		</view>
 		<view class="aa" style="padding-bottom: 150rpx;"></view>
@@ -131,6 +138,15 @@
 </script>
 
 <style>
+	.custom-style {
+		color: #606266;
+		width: 140rpx;
+		margin-right:10px;
+	}
+	.custom-style1 {
+		color: #606266;
+		width: 20rpx;
+	}
 	.inlist {
 		margin-top: 250upx;
 	}

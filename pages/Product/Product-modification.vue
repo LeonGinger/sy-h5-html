@@ -43,7 +43,7 @@
 				<u-form-item label="生产日期:" prop="input" required>
 					<view @click="show = true" :style="input=='请选择生产日期' ? 'color:#C0C4CC':'color:black'" class="scrq" style="width: 420upx;">{{ input.slice(0,10) }}</view>
 					<!-- <u-icon name="close-circle-fill" color="#c1c1cb" size="30"  @click="qxscrqi" v-if="input!=''"></u-icon> -->
-					<u-icon style="margin-top: 10rpx;margin-left: -8rpx;" size="20" name="arrow-down-fill"></u-icon>
+					<u-icon style="margin-top: 10rpx;margin-left: -8rpx;" size="20" name="arrow-right"></u-icon>
 				</u-form-item>
 				<u-picker mode="time" v-model="show" :params="params" @confirm="confirm"></u-picker>
 				<u-form-item label="保质期限:" prop="newcbz" required>
@@ -88,7 +88,7 @@
 							
 							<view @click="showjc = true" :style="inputjc=='请选择检疫检测日期' ? 'color:#C0C4CC':'color:black'" class="scrq" style="width: 420upx;">{{ inputjc ? inputjc.slice(0,10) : '请选择检疫检测日期' }}</view>
 							<u-icon name="close-circle-fill" color="#c1c1cb" size="30"  @click="qxinputjc" v-if="inputjc != '请选择检疫检测日期'"></u-icon>
-							<u-icon style="margin-top: 10rpx;margin-left: -8rpx;" size="20" name="arrow-down-fill" v-if="inputjc == '请选择检疫检测日期'"></u-icon>
+							<u-icon style="margin-top: 10rpx;margin-left: -8rpx;" size="20" name="arrow-right" v-if="inputjc == '请选择检疫检测日期'"></u-icon>
 						</u-form-item>
 						<u-picker mode="time" v-model="showjc" :params="paramsjc" @confirm="confirmjc"></u-picker>
 						<u-form-item label="检验地点:">
